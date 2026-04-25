@@ -452,11 +452,12 @@ p
     .bucket-wrapper
     {
         padding-left: 20px;
-        padding-right: 100px;
+        padding-right: 0;
     }
     .bucket-track
     {
         gap: 16px;
+        padding-right: 20px;
     }
 
     .bucket1,
