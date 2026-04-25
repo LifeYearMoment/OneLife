@@ -440,13 +440,13 @@ p
     }
     .hero h1 
     {
-        font-size:58px;
+        font-size:40px;
         line-height: 1.05;
         word-spacing: 12px;
     }
     .hero p 
     {
-        font-size: 34px;
+        font-size: 38px;
         line-height: 1.2;
     }
     .bucket-wrapper
