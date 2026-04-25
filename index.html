@@ -1,0 +1,150 @@
+<!DOCTYPE html>                                                                                         <!--Festlegung des Dokumententypes-->
+<html>
+    <head>                                                                                              <!--Kopf kein Inhalt der Seite-->
+        <meta charset="UTF-8">                                                                          <!--Sorgt dafür, dass Umlaute funktionieren-->
+        <meta name="viewport" content="width=device-width", initial-scale="1.0">                        <!--Google bewertet Mobilefähigkeit ==> Ranking | Seite passt sich Bildschirmgröße an | Wichtig für mobile Geräte-->
+        <meta name="description" content="Bucketlist">                                                  <!--für Google | description = Text unter dem Titel in Google-->
+        <link rel="stylesheet" href="style.css">                                                        <!--rel=relationship=Beziehung | verbindet HTML-Seite mit CSS-->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+        <title>Life | Year | Moment</title>                                                             <!--Titel für Browser Tab | Sehr wichtig für Google-Suche | Konkret, klar, enthält Keywords, kein Blabla-->
+    </head>
+
+    <body>                                                                                              <!--Body = Seiteninhalt-->
+        <header>                                                                                        <!--header = Kopfbereich für Logo, Seitentitel, Slogan-->
+            <nav class="nav">                                                                           <!--nav = Seitennavigation, kennt man mit den drei Strichen-->
+
+                                                                                                        <!--"/"=auf Hauptseite(nur bei echter Website, sonst eine Ebene höher, da in virtueller Umgebung mehrere Projekte, wo eigentlich Startseite liegt)-->
+                                                                                                        <!--"./"=auf Seite bleiben-->
+                                                                                                        <!--"../"=Seite zurück-->
+                                                                                                        <!--"../../"=zwei Seiten zurück-->
+                                                                                                        <!--"/Seite xyz"=Seite direkt ansteuern-->
+<!--##################################-->
+<!--Logo | Seitennavigation | Sonstiges-->
+<!--##################################-->
+                <div class="nav-left">
+                    <a href="index.html">One<span class="highlight">Life</span></a>
+                </div>
+
+                <ul class="nav-center">
+                    <li><a href="#links">Links</a></li>                                                <!--# = ID-Links ansprechen-->
+                    <li><a href="#bilder">Bilder</a></li>                                              <!--ID- und Class-Bezeichnungen immer klein Schreiben ==> geringere Fehleranfälligkeit-->
+                    <li><a href="#formular">Formular</a></li>
+                </ul>
+
+                <div class="nav-right">
+                    <a href="#">
+                        Hilfe
+                    </a>
+                    <a href="#">
+                        Login
+                    </a>
+                </div>
+            </nav>
+            
+<!--##################################-->
+                <!--Balken-->
+<!--##################################-->
+
+            <section class="balken"></section>
+
+<!--##################################-->
+                <!--Hero-->
+<!--##################################-->
+
+            <section class="hero">
+                <div class="container">
+                    <p>Hier entsteht was für dich</p><br>
+                    <h1><span class="highlight">Life</span> Year Moment</h1>                                             <!--h1 = einmalige Hauptseitenüberschrift-->
+                    <p>Was machst du aus deiner Zeit?</p>  <!--p = Absatz-->
+                </div>
+            </section>
+        </header>
+       
+<!--##################################-->
+                <!--MAIN-->
+<!--##################################-->        
+
+        <main>                                                                                          <!--Main = Hauptinhalt (wie Buch)-->
+
+<!--##################################-->
+                <!--Buckets-->
+<!--##################################-->
+
+        <section class="bucket-section">                                                                <!-- äußerer Bereich-->
+            <div class="bucket-wrapper">                                                                <!-- horizontales Scrollen-->
+                <div class="bucket-track">                                                              <!-- Kartenreihe-->
+                    <div class="bucket1">                                                               <!-- Karte-->
+                        Life
+                        <div class="life-tasks">
+                             <div class="life-task">
+                                Task 1
+                            </div>
+                            <div class="life-task">
+                                Task 2
+                            </div>
+                            <div class="life-task">
+                                Task 3
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bucket2">
+                        Year
+                        <div class="year-tasks">
+                             <div class="year-task">
+                                Task 1
+                            </div>
+                            <div class="year-task">
+                                Task 2
+                            </div>
+                            <div class="year-task">
+                                Task 3
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bucket3">
+                        Moment
+                        <div class="moment-tasks">
+                             <div class="moment-task">
+                                Task 1
+                            </div>
+                            <div class="moment-task">
+                                Task 2
+                            </div>
+                            <div class="moment-task">
+                                Task 3
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bucket4">
+                        Kids
+                        <div class="kids-tasks">
+                             <div class="kids-task">
+                                Task 1
+                            </div>
+                            <div class="kids-task">
+                                Task 2
+                            </div>
+                            <div class="kids-task">
+                                Task 3
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </main>
+
+        <footer>                                                                                        <!--Footer = Fußbereich der Seite (Copyright, Impressum, Datenschutz, Kontakt, Social Media)-->                                                                                       
+            <p>&copy; 2026 Life | Year | Moment </p>                                                      <!--&copy erstellt Copyright-Zeichen-->     
+        </footer>
+    </body>
+</html> 
+
+
+<!--#####IDEEN#######-->
+
+
+<!-- Plane deine wichtigsten Momente -->

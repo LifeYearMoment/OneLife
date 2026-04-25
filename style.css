@@ -1,0 +1,508 @@
+/* CSS = Cascading Style Sheets */
+
+/* STYLE DER GESAMTSEITE */ 
+body
+{
+    /*font-family: -apple-system, BlinkMacSystemFont,   /* font-family = Schriftart (Arial, sans-serif)*/
+    /*"Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* mehrere, da nicht alle auf allen Geräten verfügbar sind*/
+    font-family: 'Inter', sans-serif; 
+    background: #f5f5f7;                            /* background = Hintergrund */ 
+    margin: 0 auto;                                   /* margin = Außenabstand / mit Auto zentriert */
+}
+
+/* STYLE DER NAVIGATION */
+
+.nav                                                /* nav = spreche ganzen Navigationsbereich an */ 
+{
+    display: grid;                                  /* aktiviert Rastersystem mit Spalten und Reihen.
+                                                       grid befüllt die imaginäre Tabelle innerhalb des angesprochenen Bereiches
+                                                       (hier .nav) immer der Reihe nach. Existieren sowohl Spalten als auch Reihen
+                                                       werden zuerst die Spalten der ersten Zeile, dann die der zweiten und
+                                                       so weiter von links nach rechts gefüllt*/
+    grid-template-columns: 1fr auto 1fr;            /*grid-template-colums = Anzahl der Einträge bestimmt Anzahl der Spalten
+                                                       fr = fraction (flexibler Anteil vom verfügbaren Platz), auto = Größe richtet sich nach Inhalt, nur so breit wie Inhalt, px = feste Größe */
+    align-items: center;                            /* align-items (Element Ausrichten) = vertikale Ausrichtung  */
+                                                    /* (flex-start = alles links, center=mittig, space-between=maximal auseinander, space-around=gelichmäßig verteilt */
+    padding: 12px 32px;                             /* padding = Innenabstand = Abstand Inhalt zum Rand (Abstand oben unten | Abstand links rechts */
+    background: #ffffff;                          /* background = Hintergrund */ 
+    font-size: 14px;   
+    color: black;                                 /* color = Textfarbe */ 
+    text-decoration: none;
+}
+
+.nav-left
+{
+    justify-self: start;                       
+}
+
+.nav-center
+{
+    display: flex;
+    gap: 10px; 
+
+    list-style: none;                                  /* list-style = Darstellung von Aufzählungszeichen | none = keine Aufzählungszeiche, square = Quadrate */
+    margin: 0;
+    padding: 0; 
+
+    justify-self: center;
+}
+
+.nav-right
+{
+    display: flex;
+    gap: 10px;
+    justify-self: end;
+}
+
+.nav-left a
+{
+    color: inherit;
+    text-decoration: inherit;
+
+    font-weight: 700;
+}
+
+.nav-center a
+{
+    display: block;
+    padding: 6px 10px;
+    text-decoration: inherit;                          /* text-decoration = Textverzierung 
+                                                       text-decoration = none ==> enfernt Unterstreichung von Links
+                                                       text-decoration = underline ==> unterstreichen
+                                                       text-decoration = line-through ==> durchstreichen */
+    color: inherit;                                    /* inherit = erben ==> übernimmt die Farbe vom Eltern-Element */
+    border-radius: 4px;                             
+    transition: background-color 0.3s ease;            /* Transition = Übergang ==> Animation über 0.3 s wird immer in den Ausgangzustand nicht Zielzustand geschrieben */
+                                                       /* transition color ==> Übergang wird nur auf die Farbe angewendet, ease = Leichtigkeit ==> weicher Start/Ende */
+    font-weight: 500;
+}
+
+.nav-right a
+{
+    display: block;
+    padding: 6px 10px;
+    text-decoration: inherit;
+    color: inherit;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+}
+.nav-center a:hover                                 /* nav a:hover = wende Style auf Link <a> in der Nav an, wenn Maus über Link 
+                                                      :hover = Zustand*/ 
+{
+    background-color: rgba(0,0,0,0.06);           /* color = Textfarbe */
+}
+
+.nav-right a:hover                                 
+{
+    background-color: rgba(0,0,0,0.06);                                   
+}
+
+.logo img
+{
+    display: block;
+    height: 32px;
+}
+
+/* STYLE DER BALKEN */
+
+.balken
+{
+    background: #f5f5f7;                             
+    
+    height: 60px;
+    max-width: none;                               
+    border-radius: 0;                     
+    
+    margin: 0;                                      /* 0 = oben, 0 = rechts, 10px = unten, 0 = links */  
+    padding: 0;                                                                                    
+}         
+
+/* STYLE DER ABSCHNITTE */
+
+.hero
+{
+    margin-bottom: 50px;
+    padding-left: 140px;
+    font-size: 50px;
+}
+
+.hero h1
+{
+    font-size: 80px;
+    font-weight: 540;
+    word-spacing: 40px;
+    letter-spacing: -1.5px; 
+    line-height: 1.05;   
+}
+
+.bucket-section
+{
+    margin-bottom:50px;
+}
+
+.bucket-wrapper
+{
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-top: 32px;
+    padding-bottom: 50px; 
+    padding-left: 140px;  
+    padding-right: 140px;
+    scroll-behavior: smooth;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.bucket-wrapper::-webkit-scrollbar 
+{
+    display:none
+}
+
+.bucket-track
+{
+    display: flex;
+    gap: 20px;
+    width: max-content;                             /* Bereich darf so breit werden, wie die Karten zusammen breit sind. */
+}
+
+.bucket1
+{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
+    height: 500px;
+    border-radius: 19px;
+    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
+    border: 1px solid rgba(0,0,0,0.03);
+    padding: 35px;
+    padding-top: 50px;
+    font-size: 25px;
+    font-weight: 600;
+    color: black;
+   /* background: linear-gradient(
+        135deg,
+        #fde6c7,
+        #f8dba8
+    );  */
+    /*background: linear-gradient(
+        135deg,
+        #f9f1e4,
+        #e3c79f
+    );*/
+/* https://grabient.com/HQDgDAbANMDsCsBGGsLWAZgJyxtsesIMiYGJ8xwiE8UALMAEz1YPPbtO1QC0wYVjHoQqTENH6J6IIA?angle=270 */
+
+background: linear-gradient(270deg, #e7dad8 0.000%, #e6d9d7 16.667%, #e5d8d5 33.333%, #e4d6d3 50.000%, #e3d5d2 66.667%, #e2d3d0 83.333%, #e1d2ce 100.000%);
+        
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.07),
+        0 4px 16px rgba(0,0,0,0.08);
+    /*transition: transform 0.3s ease;*/
+    transition: box-shadow 0.3s ease;
+
+}
+
+.bucket1:hover
+{
+    /*transform: scale(1.015)*/
+     box-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.14),
+        2px 6px 16px rgba(0,0,0,0.16);
+}
+
+.bucket2
+{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
+    height: 500px;
+    border-radius: 19px;
+    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
+    border: 1px solid rgba(0,0,0,0.03);
+    padding: 35px;
+    padding-top: 50px;
+    font-size: 25px;
+    font-weight: 600;
+    color: black;
+    background-color: #ffffff;
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.07),
+        0 4px 16px rgba(0,0,0,0.08);
+}
+
+.bucket3
+{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
+    height: 500px;
+    border-radius: 19px;
+    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
+    border: 1px solid rgba(0,0,0,0.03);
+    padding: 35px;
+    padding-top: 50px;
+    font-size: 25px;
+    font-weight: 600;
+    color: black;
+    background-color: #ffffff;
+    box-shadow:
+       0 1px 2px rgba(0, 0, 0, 0.07),
+       0 4px 16px rgba(0,0,0,0.08);
+}
+
+.bucket4
+{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
+    height: 500px;
+    border-radius: 19px;
+    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
+    border: 1px solid rgba(0,0,0,0.03);
+    padding: 35px;
+    padding-top: 50px;
+    font-size: 25px;
+    font-weight: 600;
+    color: black;
+/* https://grabient.com/HQdgbGA0oKwIzQBwAYrAMwkddBOZOuI0cYMJM2wcy6kALMAExkPN5tP26QC0w9MATjNcPEekRM+GeEA */
+
+background: linear-gradient(90deg, #b9adc2 0.000%, #c6bdcc 16.667%, #cbc7d4 33.333%, #c9cbd9 50.000%, #c1c9dc 66.667%, #b1bfdb 83.333%, #9db0d8 100.000%);
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.07),
+        0 4px 16px rgba(0,0,0,0.08);
+}
+
+.life-tasks
+{
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column; 
+    flex: 1; 
+    justify-content:center;
+    gap: 20px;    
+}
+
+.life-task
+{
+    display: flex;
+    flex: 1;
+    border-radius: 10px; 
+    background: linear-gradient(90deg, #ebdfdb 0.000%, #ebdfdb 16.667%, #ebdfdb 33.333%, #ebdfdb 50.000%, #ebdfdb 66.667%, #ebdfdb 83.333%, #ebdfdb 100.000%);
+    /*background: 
+    linear-gradient(135deg, #ffffff, #f3eee6),
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255,0.4), transparent 40%);*/
+    padding: 20px   ; 
+    font-size: 20px;
+    font-weight: 550;
+    color: black;
+    border: 1px solid rgba(0,0,0,0.17);
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.06),
+        0 12px 24px rgba(0,0,0,0.08);
+}
+
+.year-tasks
+{
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column; 
+    flex: 1; 
+    justify-content:center;
+    gap: 20px;    
+}
+
+.year-task
+{
+    display: flex;
+    flex: 1;
+    border-radius: 10px; 
+    background: #f5f5f7; 
+    padding: 20px   ; 
+    font-size: 20px;
+    font-weight: 550;
+    color: black;
+    border: 1px solid rgba(0,0,0,0.17);
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.06),
+        0 12px 24px rgba(0,0,0,0.08);
+}
+
+.moment-tasks
+{
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column; 
+    flex: 1; 
+    justify-content:center;
+    gap: 20px;    
+}
+
+.moment-task
+{
+    display: flex;
+    flex: 1;
+    border-radius: 10px; 
+    background: #f5f5f7; 
+    padding: 20px   ; 
+    font-size: 20px;
+    font-weight: 550;
+    color: black;
+    border: 1px solid rgba(0,0,0,0.17);
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.06),
+        0 12px 24px rgba(0,0,0,0.08);
+}
+
+.kids-tasks
+{
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column; 
+    flex: 1; 
+    justify-content:center;
+    gap: 20px;    
+}
+
+.kids-task
+{
+    display: flex;
+    flex: 1;
+    border-radius: 10px; 
+    background: #f5f5f7; 
+    padding: 20px   ; 
+    font-size: 20px;
+    font-weight: 550;
+    color: black;
+    border: 1px solid rgba(0,0,0,0.17);
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.06),
+        0 12px 24px rgba(0,0,0,0.08);
+}
+
+
+.section
+{
+    padding: 40px;                                  /* padding = Innenabstand = Abstand Inhalt zum Rand */
+    margin: 40px auto;                              /* margin = Außenabstand */
+    background: white;                            /* background = Hintergrund */ 
+    max-width: 800px;                               /* maximale Breite */
+    border-radius: 8px;                             /* border-radius = abgerundete Ecken */
+    /*padding-left: 140px;*/
+}
+
+
+/* STYLE DER Überschriften */
+
+h1
+{
+    font-size: 32px;                                /* font-size = Schriftgröße */ 
+    margin: 0;                                      /* margin-bottom = Außenabstand unten */
+}
+
+h2
+{
+    font-size: 24px;                                /* font-size = Schriftgröße */
+    margin: 0;                                      /* margin-bottom = Außenabstand unten */
+}
+
+/* STYLE DER ABSÄTZE */
+
+p
+{
+    color: #555;                                  /* color = Textfarbe */ 
+    line-height: 1.5;                               /* Zeilenhöhe */
+    margin: 0;
+}
+
+.highlight
+{
+    color: #f6b980;
+    letter-spacing: 1px;
+}
+
+/* BEISPIELCODE */
+
+/*text-align: center;                               /* Text horizontal centrieren */
+/*nav                                               /* nav = spreche ganzen Navigationsbereich an */ 
+/*nav a                                             /* nav a = wende Style auf Link <a> in der Nav an */
+/*justify-content: center;                          /* justify-content (Verteile alle Kinder im Container (wie Gruppieren)| Inhalt Ausrichten) = horizontale Verteilung */
+/*justify-self: center;                             /* Justify-self (richtet eineinzelnes Kind aus | richtet Box aus) = horizontale Verteilung*/
+/*border-bottom: 0px solid #ddd;                    /* border-bottom = Rahmenboden */
+/*max-width: 100%;                                  /* max-width = maximale Breite */
+/*height: auto;                                     /* height = Höhe */
+/*margin: 20px auto;                                /* margin = Außenabstand */
+/*padding: 0;                                       /* padding = Innenabstand = Abstand Inhalt zum Rand */
+/*gap: 20px;                                        /* gap = sauberer Abstand */
+/*list-style: none;                                 /* list-style = Listenstil
+                                                       list-style = none ==> entfernt Punkte bei Listen */
+/*display: flex;                                    /* display = Darstellungsart (block, inline, flex)
+                                                       block = nimmt ganze Zeile ein
+                                                       inline = bleibt in der Zeile 
+                                                       flex = Element flexibel anordnen
+                                                       grid =  */
+/*position: relative; top: 10px;                    /* benutzerdefiniert verschiebbar machen */
+/*transform: translateY(-2px);                      /* schiebe Objekt 2 px nach oben*/                              
+/*box-shadow: 0 10px 20px rgba(0,0,0,0.9);*/
+
+/*.buckets
+{
+    padding-left: 145px;
+    margin-bottom: 50px;
+    display: grid;                                  
+    grid-template-columns: repeat(4, 300px);            
+    gap: 20px;       
+    height: 400px;                                                                  
+}*/
+
+
+/* ########## Wissensdatenbank ########### */
+
+/* Kinder überschreiben Eltern. Bsp: Farbgebung der Schrift in a = Link überschreibt Farbgebung der Schrift in Ul = unsortierte Liste, wenn Link in dieser Liste steht. */
+/* Handy 390px breit */
+
+
+/*### Farben ###*/
+/*
+--- Peach ---
+
+background-color: #fbe8de;
+
+--- warm ---
+
+background: linear-gradient(
+    135deg,
+    #fbe8d3,
+    #f6d3a3
+);
+
+background: linear-gradient(
+    135deg,
+    #fde3c7,
+    #f6b980
+);
+
+--- blau ---
+
+background: linear-gradient(
+    135deg,
+    #dbeafe,
+    #93c5fd
+);
+
+--- blau ---
+
+background: linear-gradient(
+    135deg,
+    #dcfce7,
+    #86efac
+);
+
+--- rosa ---
+
+background: linear-gradient(
+    135deg,
+    #fce7f3,
+    #f9a8d4
+);
+*/
