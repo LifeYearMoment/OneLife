@@ -1,6 +1,9 @@
 /* CSS = Cascading Style Sheets */
 
-/* STYLE DER GESAMTSEITE */ 
+/*#######################*/
+/* STYLE DER GESAMTSEITE */
+/*#######################*/
+
 body
 {
     /*font-family: -apple-system, BlinkMacSystemFont,   /* font-family = Schriftart (Arial, sans-serif)*/
@@ -10,7 +13,9 @@ body
     margin: 0 auto;                                   /* margin = Außenabstand / mit Auto zentriert */
 }
 
+/*#######################*/
 /* STYLE DER NAVIGATION */
+/*#######################*/
 
 .nav                                                /* nav = spreche ganzen Navigationsbereich an */ 
 {
@@ -104,7 +109,9 @@ body
     height: 32px;
 }
 
+/*#######################*/
 /* STYLE DER BALKEN */
+/*#######################*/
 
 .balken
 {
@@ -118,7 +125,9 @@ body
     padding: 0;                                                                                    
 }         
 
-/* STYLE DER ABSCHNITTE */
+/*#######################*/
+/* STYLE HERO */
+/*#######################*/
 
 .hero
 {
@@ -135,6 +144,10 @@ body
     letter-spacing: -1.5px; 
     line-height: 1.05;   
 }
+
+/*#######################*/
+/*STYLE DER KARTEN*/
+/*#######################*/
 
 .bucket-section
 {
@@ -166,6 +179,10 @@ body
     gap: 20px;
     width: max-content;                             /* Bereich darf so breit werden, wie die Karten zusammen breit sind. */
 }
+
+/*#######################*/
+/*STYLE DER BUCKETS*/
+/*#######################*/
 
 .bucket1
 {
@@ -211,68 +228,6 @@ background: linear-gradient(270deg, #e7dad8 0.000%, #e6d9d7 16.667%, #e5d8d5 33.
         2px 6px 16px rgba(0,0,0,0.16);
 }
 
-.bucket2
-{
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
-    height: 500px;
-    border-radius: 19px;
-    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
-    border: 1px solid rgba(0,0,0,0.03);
-    padding: 35px;
-    padding-top: 50px;
-    font-size: 25px;
-    font-weight: 600;
-    color: black;
-    background-color: #ffffff;
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.07),
-        0 4px 16px rgba(0,0,0,0.08);
-}
-
-.bucket3
-{
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
-    height: 500px;
-    border-radius: 19px;
-    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
-    border: 1px solid rgba(0,0,0,0.03);
-    padding: 35px;
-    padding-top: 50px;
-    font-size: 25px;
-    font-weight: 600;
-    color: black;
-    background-color: #ffffff;
-    box-shadow:
-       0 1px 2px rgba(0, 0, 0, 0.07),
-       0 4px 16px rgba(0,0,0,0.08);
-}
-
-.bucket4
-{
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
-    height: 500px;
-    border-radius: 19px;
-    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
-    border: 1px solid rgba(0,0,0,0.03);
-    padding: 35px;
-    padding-top: 50px;
-    font-size: 25px;
-    font-weight: 600;
-    color: black;
-/* https://grabient.com/HQdgbGA0oKwIzQBwAYrAMwkddBOZOuI0cYMJM2wcy6kALMAExkPN5tP26QC0w9MATjNcPEekRM+GeEA */
-
-background: linear-gradient(90deg, #b9adc2 0.000%, #c6bdcc 16.667%, #cbc7d4 33.333%, #c9cbd9 50.000%, #c1c9dc 66.667%, #b1bfdb 83.333%, #9db0d8 100.000%);
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.07),
-        0 4px 16px rgba(0,0,0,0.08);
-}
-
 .life-tasks
 {
     margin-top: 32px;
@@ -302,6 +257,26 @@ background: linear-gradient(90deg, #b9adc2 0.000%, #c6bdcc 16.667%, #cbc7d4 33.3
         0 12px 24px rgba(0,0,0,0.08);
 }
 
+.bucket2
+{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
+    height: 500px;
+    border-radius: 19px;
+    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
+    border: 1px solid rgba(0,0,0,0.03);
+    padding: 35px;
+    padding-top: 50px;
+    font-size: 25px;
+    font-weight: 600;
+    color: black;
+    background-color: #ffffff;
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.07),
+        0 4px 16px rgba(0,0,0,0.08);
+}
+
 .year-tasks
 {
     margin-top: 32px;
@@ -328,6 +303,26 @@ background: linear-gradient(90deg, #b9adc2 0.000%, #c6bdcc 16.667%, #cbc7d4 33.3
         0 12px 24px rgba(0,0,0,0.08);
 }
 
+.bucket3
+{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
+    height: 500px;
+    border-radius: 19px;
+    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
+    border: 1px solid rgba(0,0,0,0.03);
+    padding: 35px;
+    padding-top: 50px;
+    font-size: 25px;
+    font-weight: 600;
+    color: black;
+    background-color: #ffffff;
+    box-shadow:
+       0 1px 2px rgba(0, 0, 0, 0.07),
+       0 4px 16px rgba(0,0,0,0.08);
+}
+
 .moment-tasks
 {
     margin-top: 32px;
@@ -352,6 +347,28 @@ background: linear-gradient(90deg, #b9adc2 0.000%, #c6bdcc 16.667%, #cbc7d4 33.3
     box-shadow:
         0 2px 6px rgba(0,0,0,0.06),
         0 12px 24px rgba(0,0,0,0.08);
+}
+
+.bucket4
+{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
+    height: 500px;
+    border-radius: 19px;
+    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
+    border: 1px solid rgba(0,0,0,0.03);
+    padding: 35px;
+    padding-top: 50px;
+    font-size: 25px;
+    font-weight: 600;
+    color: black;
+/* https://grabient.com/HQdgbGA0oKwIzQBwAYrAMwkddBOZOuI0cYMJM2wcy6kALMAExkPN5tP26QC0w9MATjNcPEekRM+GeEA */
+
+background: linear-gradient(90deg, #b9adc2 0.000%, #c6bdcc 16.667%, #cbc7d4 33.333%, #c9cbd9 50.000%, #c1c9dc 66.667%, #b1bfdb 83.333%, #9db0d8 100.000%);
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.07),
+        0 4px 16px rgba(0,0,0,0.08);
 }
 
 .kids-tasks
@@ -381,18 +398,9 @@ background: linear-gradient(90deg, #b9adc2 0.000%, #c6bdcc 16.667%, #cbc7d4 33.3
 }
 
 
-.section
-{
-    padding: 40px;                                  /* padding = Innenabstand = Abstand Inhalt zum Rand */
-    margin: 40px auto;                              /* margin = Außenabstand */
-    background: white;                            /* background = Hintergrund */ 
-    max-width: 800px;                               /* maximale Breite */
-    border-radius: 8px;                             /* border-radius = abgerundete Ecken */
-    /*padding-left: 140px;*/
-}
-
-
-/* STYLE DER Überschriften */
+/*#######################*/
+/*STYLE DER Überschriften*/
+/*#######################*/
 
 h1
 {
@@ -406,7 +414,9 @@ h2
     margin: 0;                                      /* margin-bottom = Außenabstand unten */
 }
 
-/* STYLE DER ABSÄTZE */
+/*#######################*/
+/*STYLE DER Absätze*/
+/*#######################*/
 
 p
 {
@@ -421,7 +431,52 @@ p
     letter-spacing: 1px;
 }
 
-/* BEISPIELCODE */
+@media (max-width:778px)                            /*@media (max-width:778px) = Wenn dein Bildschirm kleiner als 778px ist (Handy) nimm diese Regeln */
+{
+    .hero
+    {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .hero h1 
+    {
+        font-size:58px;
+        line-height: 1.05;
+        word-spacing: 12px;
+    }
+    .hero p 
+    {
+        font-size: 34px;
+        line-height: 1.2;
+    }
+    .bucket-wrapper
+    {
+        padding-left: 20px;
+        padding-right: 0;
+    }
+    .bucket-track
+    {
+        gap: 16px;
+    }
+
+    .bucket1,
+    .bucket2,
+    .bucket3,
+    .bucket4
+    {
+        flex: 0 0 82vw;
+        height: 560px;
+    }
+    .nav
+    {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/*#######################*/
+/*Beispielcode*/
+/*#######################*/
 
 /*text-align: center;                               /* Text horizontal centrieren */
 /*nav                                               /* nav = spreche ganzen Navigationsbereich an */ 
