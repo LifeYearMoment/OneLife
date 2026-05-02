@@ -156,12 +156,12 @@ body
 
 .bucket-wrapper
 {
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow-x: auto;                               /* Wenn der Inhalt breiter ist als der sichtbae Bereich, darf horizontal gescrollt werden */
+    overflow-y: hidden;                             /* Vertikaler Überstand über den wrapper wird abgeschnitten */
     padding-top: 32px;
-    padding-bottom: 50px; 
+    padding-bottom: 50px;                           /* gibt Schatten mehr Platz */
     padding-left: 140px;  
-    padding-right: 140px;
+   
     scroll-behavior: smooth;
 
     scrollbar-width: none;
@@ -177,6 +177,7 @@ body
 {
     display: flex;
     gap: 20px;
+    padding-right: 140px;                           /* Im wrapper nicht immer Zuverlässig dargestellt, daher im track, da dies den maximal scrollbaren Bereich darstellt */
     width: max-content;                             /* Bereich darf so breit werden, wie die Karten zusammen breit sind. */
 }
 
@@ -184,7 +185,14 @@ body
 /*STYLE DER BUCKETS*/
 /*#######################*/
 
-.bucket1
+.bucket-description
+{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.bucket
 {
     display: flex;
     flex-direction: column;
@@ -193,10 +201,67 @@ body
     border-radius: 19px;
     box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
     border: 1px solid rgba(0,0,0,0.03);
-    padding: 35px;
+    padding: 20px;
     padding-top: 50px;
     font-size: 25px;
     font-weight: 600;
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.07),
+        0 4px 16px rgba(0,0,0,0.08);
+}
+
+.bucket-subtext
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size:18px;
+    /*opacity: 0.7;*/
+    margin-top: 32px;
+    line-height: 2;
+    font-weight: 700;
+    color: #f6b980;
+}
+
+.sub 
+{
+    padding-top: 12px;
+    font-size:14px;
+    font-weight: 700;
+    color: black;
+}
+
+.task-section
+{
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column; 
+    flex: 1; 
+    justify-content:flex-start;
+    gap: 20px; 
+    padding: 12px;
+    margin-left: -12px;
+    margin-right: -12px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.task
+{
+    display: flex;
+    flex: 0 0 90px;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,0.17);
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.06),               /* offset-x  offset-y   blur-radius  spread-radius  color*/
+        0 6px 12px rgba(0,0,0,0.08);
+}
+
+.bucket1
+{
     color: black;
    /* background: linear-gradient(
         135deg,
@@ -208,16 +273,10 @@ body
         #f9f1e4,
         #e3c79f
     );*/
-/* https://grabient.com/HQDgDAbANMDsCsBGGsLWAZgJyxtsesIMiYGJ8xwiE8UALMAEz1YPPbtO1QC0wYVjHoQqTENH6J6IIA?angle=270 */
+    /* https://grabient.com/HQDgDAbANMDsCsBGGsLWAZgJyxtsesIMiYGJ8xwiE8UALMAEz1YPPbtO1QC0wYVjHoQqTENH6J6IIA?angle=270 */
 
-background: linear-gradient(270deg, #e7dad8 0.000%, #e6d9d7 16.667%, #e5d8d5 33.333%, #e4d6d3 50.000%, #e3d5d2 66.667%, #e2d3d0 83.333%, #e1d2ce 100.000%);
-        
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.07),
-        0 4px 16px rgba(0,0,0,0.08);
-    /*transition: transform 0.3s ease;*/
-    transition: box-shadow 0.3s ease;
-
+    background: linear-gradient(270deg, #e7dad8 0.000%, #e6d9d7 16.667%, #e5d8d5 33.333%, #e4d6d3 50.000%, #e3d5d2 66.667%, #e2d3d0 83.333%, #e1d2ce 100.000%);   
+    transition: box-shadow 0.3s ease;               /*transition: transform 0.3s ease;*/
 }
 
 .bucket1:hover
@@ -228,173 +287,60 @@ background: linear-gradient(270deg, #e7dad8 0.000%, #e6d9d7 16.667%, #e5d8d5 33.
         2px 6px 16px rgba(0,0,0,0.16);
 }
 
-.life-tasks
-{
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column; 
-    flex: 1; 
-    justify-content:center;
-    gap: 20px;    
-}
-
 .life-task
 {
-    display: flex;
-    flex: 1;
-    border-radius: 10px; 
     background: linear-gradient(90deg, #ebdfdb 0.000%, #ebdfdb 16.667%, #ebdfdb 33.333%, #ebdfdb 50.000%, #ebdfdb 66.667%, #ebdfdb 83.333%, #ebdfdb 100.000%);
     /*background: 
     linear-gradient(135deg, #ffffff, #f3eee6),
     radial-gradient(circle at 20% 20%, rgba(255, 255, 255,0.4), transparent 40%);*/
-    padding: 20px   ; 
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 550;
     color: black;
-    border: 1px solid rgba(0,0,0,0.17);
-    box-shadow:
-        0 2px 6px rgba(0,0,0,0.06),
-        0 12px 24px rgba(0,0,0,0.08);
 }
 
 .bucket2
 {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
-    height: 500px;
-    border-radius: 19px;
-    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
-    border: 1px solid rgba(0,0,0,0.03);
-    padding: 35px;
-    padding-top: 50px;
-    font-size: 25px;
-    font-weight: 600;
     color: black;
     background-color: #ffffff;
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.07),
-        0 4px 16px rgba(0,0,0,0.08);
-}
-
-.year-tasks
-{
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column; 
-    flex: 1; 
-    justify-content:center;
-    gap: 20px;    
 }
 
 .year-task
 {
-    display: flex;
-    flex: 1;
-    border-radius: 10px; 
-    background: #f5f5f7; 
-    padding: 20px   ; 
-    font-size: 20px;
+    background: #f5f5f7;  
+    font-size: 17px;
     font-weight: 550;
     color: black;
-    border: 1px solid rgba(0,0,0,0.17);
-    box-shadow:
-        0 2px 6px rgba(0,0,0,0.06),
-        0 12px 24px rgba(0,0,0,0.08);
 }
 
 .bucket3
 {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
-    height: 500px;
-    border-radius: 19px;
-    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
-    border: 1px solid rgba(0,0,0,0.03);
-    padding: 35px;
-    padding-top: 50px;
-    font-size: 25px;
-    font-weight: 600;
+    
     color: black;
     background-color: #ffffff;
-    box-shadow:
-       0 1px 2px rgba(0, 0, 0, 0.07),
-       0 4px 16px rgba(0,0,0,0.08);
 }
 
-.moment-tasks
-{
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column; 
-    flex: 1; 
-    justify-content:center;
-    gap: 20px;    
-}
-
-.moment-task
-{
-    display: flex;
-    flex: 1;
-    border-radius: 10px; 
+.today-task
+{ 
     background: #f5f5f7; 
-    padding: 20px   ; 
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 550;
     color: black;
-    border: 1px solid rgba(0,0,0,0.17);
-    box-shadow:
-        0 2px 6px rgba(0,0,0,0.06),
-        0 12px 24px rgba(0,0,0,0.08);
 }
 
 .bucket4
 {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 400px;                                /* 0 = nicht wachsen, 0 = nicht schrumpfen, 300px = feste Breite. Handy 390px breit*/
-    height: 500px;
-    border-radius: 19px;
-    box-sizing: border-box;                         /* box-sizing = border-box ==> Einmal Boxhöhe einstellen und padding gehört dazu. Ansonsten (Standard) padding wird auf Höhe und Breite addiert. Box 400px, padding 20px = 440 px */
-    border: 1px solid rgba(0,0,0,0.03);
-    padding: 35px;
-    padding-top: 50px;
-    font-size: 25px;
-    font-weight: 600;
     color: black;
-/* https://grabient.com/HQdgbGA0oKwIzQBwAYrAMwkddBOZOuI0cYMJM2wcy6kALMAExkPN5tP26QC0w9MATjNcPEekRM+GeEA */
+    /* https://grabient.com/HQdgbGA0oKwIzQBwAYrAMwkddBOZOuI0cYMJM2wcy6kALMAExkPN5tP26QC0w9MATjNcPEekRM+GeEA */
 
-background: linear-gradient(90deg, #b9adc2 0.000%, #c6bdcc 16.667%, #cbc7d4 33.333%, #c9cbd9 50.000%, #c1c9dc 66.667%, #b1bfdb 83.333%, #9db0d8 100.000%);
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.07),
-        0 4px 16px rgba(0,0,0,0.08);
-}
-
-.kids-tasks
-{
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column; 
-    flex: 1; 
-    justify-content:center;
-    gap: 20px;    
+    background: linear-gradient(90deg, #b9adc2 0.000%, #c6bdcc 16.667%, #cbc7d4 33.333%, #c9cbd9 50.000%, #c1c9dc 66.667%, #b1bfdb 83.333%, #9db0d8 100.000%);
 }
 
 .kids-task
 {
-    display: flex;
-    flex: 1;
-    border-radius: 10px; 
     background: #f5f5f7; 
-    padding: 20px   ; 
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 550;
     color: black;
-    border: 1px solid rgba(0,0,0,0.17);
-    box-shadow:
-        0 2px 6px rgba(0,0,0,0.06),
-        0 12px 24px rgba(0,0,0,0.08);
 }
 
 
@@ -484,7 +430,7 @@ p
 /*nav                                               /* nav = spreche ganzen Navigationsbereich an */ 
 /*nav a                                             /* nav a = wende Style auf Link <a> in der Nav an */
 /*justify-content: center;                          /* justify-content (Verteile alle Kinder im Container (wie Gruppieren)| Inhalt Ausrichten) = horizontale Verteilung */
-/*justify-self: center;                             /* Justify-self (richtet eineinzelnes Kind aus | richtet Box aus) = horizontale Verteilung*/
+/*justify-self: center;                             /* Justify-self (richtet ein einzelnes Kind aus | richtet Box aus) = horizontale Verteilung*/
 /*border-bottom: 0px solid #ddd;                    /* border-bottom = Rahmenboden */
 /*max-width: 100%;                                  /* max-width = maximale Breite */
 /*height: auto;                                     /* height = Höhe */
@@ -501,6 +447,9 @@ p
 /*position: relative; top: 10px;                    /* benutzerdefiniert verschiebbar machen */
 /*transform: translateY(-2px);                      /* schiebe Objekt 2 px nach oben*/                              
 /*box-shadow: 0 10px 20px rgba(0,0,0,0.9);*/
+/* display: flex;
+    flex: 1;                                        /* flex: 1 = nimmt sich gleichmäßig verfügbaren Platz */
+/*flex: 0 0 auto;                                   /* flex-grow: 0 (wächst nicht, wenn mehr Platz ist);  flex-shrink: 0 (wird nicht kleiner); flex-basis: auto (Höhe richtet sich nach Inhalt+Padding);
 
 /*.buckets
 {
