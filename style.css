@@ -412,8 +412,7 @@ p
     .bucket4
     {
         flex: 0 0 82vw;
-        min-height: 420px;
-        height: auto;
+        height: 420px;
     }
     .nav
     {
