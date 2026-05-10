@@ -260,6 +260,15 @@ body
         0 6px 12px rgba(0,0,0,0.08);
 }
 
+.task:focus                                         /* .task = alle Elemente mit der Klasse task */
+                                                    /* :focus = Das ist ein sogenannter Pseudo-State | Wenn dieses Element gerade aktiv/fokussiert ist */
+{
+    outline: none;                                  /* outline = Das ist der Browser-Fokusrahmen */
+                                                    /* none = Zeige keinen Standardrahmen */
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 0 0 4px rgba(255,255,255,0.06);
+}
+
 .bucket1
 {
     color: black;
