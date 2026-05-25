@@ -266,7 +266,7 @@ body
     outline: none;                                  /* outline = Das ist der Browser-Fokusrahmen */
                                                     /* none = Zeige keinen Standardrahmen */
     border: 1px solid rgba(255,255,255,0.25);
-    box-shadow: 0 0 0 4px rgba(255,255,255,0.06);
+    box-shadow: 0 0 0 4px rgba(255,255,255,0.06);   
 }
 
 .bucket1
@@ -385,6 +385,58 @@ p
     color: #f6b980;
     letter-spacing: 1px;
 }
+
+/*#######################*/
+/*STYLE MODAL*/
+/*#######################*/
+
+.modal
+{
+    position: fixed;                                /* !!!!! Das Element klebt fest am Bildschirm. Nicht zwischen anderen Elementen, sondern frei darüber liegend. */
+
+    inset:0;                                        /* inset = 0 = top, right, bottom, left = 0. Alternative zu den nächsten 4 Zeilen. Cleaner. 
+
+    /*top:0;*/                                      /* Starte in der linken oberen Bildschirmecke */
+    /*left: 0;*/
+
+    /*width: 100%;*/                                /* 100% = 100 % der Breite des Elternelements ==> relativ zum Container/zum Elternelement. Hier kein vw (viewport width) da oft Scrolband mitberechnet und unerwünschte Effekte */
+    /*height: 100vh;*/                              /* vh = viewport height ==> 100 % Bildschirmhöhe*/
+
+    background: rgba(0,0,0,0.45);                 /* 0.45 ist Transparenz ==> 0 = unsichtbar, 1 = deckend*/
+    
+    display: none;                                  /* modal existiert in html, wird aber nicht angezeigt */
+
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content
+{
+    width: min(90%, 700px);                         /* Nimm den kleineren Wert ==> 90 % auf Mobile, da nur 360 px darstellbar, auf normalem Monitor der mehr als 700 kann nimm 700 px. Bspw. 1400 zu viel. Responsive aber nicht riesig.*/
+    min-height: 300px;                              /* Später wächst Karte automatisch mit Inhalt */ 
+    background: white;
+    border-radius: 32px;
+    padding: 32px;
+    box-sizing: border-box;                         /* Padding zählt zur Gesamtbreite dazu. */
+}
+
+.modal.open                                         /* wenn das Modal zusätzlich die Klasse "open" hat, wird es sichtbar, solange unter .modal als dispalay= none definiert = unsichtbar*/
+{
+    display: flex;
+}
+
+.modal-close
+{
+    border-radius: 5px;
+    margin-bottom: 20px;
+
+    display: flex;
+    justify-self: end;
+}
+
+/*#######################*/
+/*STYLE FÜR MOBILE*/
+/*#######################*/
 
 @media (max-width:778px)                            /*@media (max-width:778px) = Wenn dein Bildschirm kleiner als 778px ist (Handy) nimm diese Regeln */
 {

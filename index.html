@@ -1,6 +1,7 @@
 <!DOCTYPE html>                                                                                         <!--Festlegung des Dokumententypes-->
 <html>
     <head>                                                                                              <!--Kopf kein Inhalt der Seite-->
+        <script src="script.js" defer></script>                                                         <!--defer = Lade das JS, aber führe es erst aus, wenn das HTML fertig geladen ist -->
         <meta charset="UTF-8">                                                                          <!--Sorgt dafür, dass Umlaute funktionieren-->
         <meta name="viewport" content="width=device-width", initial-scale="1.0">                        <!--Google bewertet Mobilefähigkeit ==> Ranking | Seite passt sich Bildschirmgröße an | Wichtig für mobile Geräte-->
         <meta name="description" content="Bucketlist">                                                  <!--für Google | description = Text unter dem Titel in Google-->
@@ -161,13 +162,31 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section>              
         </main>
+
+<!--##################################-->
+                <!--FOOTER-->
+<!--##################################-->
 
         <footer>                                                                                        <!--Footer = Fußbereich der Seite (Copyright, Impressum, Datenschutz, Kontakt, Social Media)-->                                                                                       
             <p>&copy; 2026 Life | Year | Today </p>                                                     <!--&copy erstellt Copyright-Zeichen-->     
         </footer>
-    <script src="script.js"></script>                                                                   <!--JavaScript immer ganz unten einbinden, da Browser zuerst HTML laden soll-->
+
+<!--##################################-->
+                <!--MODAL-->
+<!--##################################-->
+
+        <div class="modal" id="taskModal">
+            <div class="modal-content">
+                <button class="modal-close" id="modalClose">
+                    X
+                </button>
+                <h2 id="modalTitle">
+                    Task Titel
+                </h2>
+            </div>
+        </div>
     </body>
 </html> 
 
@@ -189,3 +208,34 @@
 <!--Erlebnisse bewertbar machen ==> ggf. daraus und den Ortsangaben Ableitungen treffen, was interessant sein könnte und Vorschläge unterbreiten. Den Schwarm nutzen-->
 <!--Urlaub, Kurztrips, Wochenendausflüge, Tagesausflüge-->
 <!--Inspirationen für einen Urlaub in einem Land-->
+<!--User speichert Link ==> Metadaten der Website werden abgerufen und ein passendes Bild in den Task implementiert. Sollte über ein Backend laufen, nicht rein im Browser, da viele Seiten durch CORS nicht direkt vom Frontend ausgelesen werden können-->
+<!--über "og:image". Dies ist ein Open-Graph-Protokoll-->
+<!--Wichtig: User darf Bild manuell ändern, sollte es nicht ansprechend sein.-->
+
+
+<!--##################################-->
+                <!--FEEDBACK-->
+<!--##################################-->
+
+<!--###### Christin und Maria ca. 20.05.26 ######-->
+
+<!-- Die Position des Mauszeigers ist schlecht erkennbar. User Findet ihn nicht. Kontrast fehlt -->
+<!-- Kategorien und Mehrwert kann für jeden User anders sein. Kids nicht für alle relevant, vielleicht auch Hund oder Paarzeit, ..... -->
+<!-- ...Freizeit, Hobby, Umschulung. ==> Auch Buckets editierbar machen. Life | Year | Moment als Basis, weitere hinzufügbar -->
+<!-- Buckets und Tasks verschiebbar -->
+<!-- Bilder würden es aufwerten -->
+<!-- Apple hat auch immer farbige akzente, bspw ihre Produkte den Tasks. Meine Seite wirkt zwar hochwertig, aber zugleich zu wenig akzentuiert -->
+<!-- Jahresrückblick einbauen -->
+<!-- Link oder Flugtickets einbauen. Vergleich mit Apple Wallet -->
+<!-- Erlebnisse bewertbar machen -->
+<!-- Frage: Ob man es wirklich nutzt (Feedback User Ü65) -->
+<!-- Ziele, die länger als ein Jahr sind und vielleicht schon laufen berücksichtigen -->
+<!-- Abhaklisten einbauen. Dann am besten in Modal. Unterscheiden in To-Dos für den Punkt und Punkte die man dort erleben will. (Paris: Louvre, Eifelturm, ...)-->
+<!-- Bucketnamen inkonsistent in Sprache deutsch/englisch -->
+<!-- Sprung von Jahr zu Tag zu groß. Tag weniger Mehrwert. Eher nahe Zukunft, die nächsten Wochen oder ähnliches -->
+<!-- Kalendereintrag im Handy generieren lassen. War ein sehr wichtiges Feature für User U40 -->
+<!-- Tasks nach Fälligkeit automatisch nach oben sortieren -->
+<!-- Nahe Zukunft ganz nach vorne sortieren, sodass das aktuell wichtige immer im Fokus stehet -->
+<!-- Erinnerungen einrichten. Ggf. Push Benachrichtigungen -->
+<!-- Countdown einrichten, sodass nächste Events ein Highlight sind. X-Tage bis zu deinem Urlaub, X-Tage bis zum Konzert..... -->
+<!-- Für Tasks aus die zurückliegen: Lessons Learned, Früher Buchen, nicht an Feiertagen da viel los, Weg war schlecht zu finden, .... -->
