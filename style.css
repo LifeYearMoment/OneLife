@@ -231,6 +231,10 @@ body
     color: black;
 }
 
+/*#######################*/
+/*STYLE DER TASKS*/
+/*#######################*/
+
 .task-section
 {
     margin-top: 32px;
@@ -250,8 +254,11 @@ body
 
 .task
 {
-    display: flex;
+    display: flex;                                  /*"display: flex" verändert nicht nur die Anordnung der Kinder, sondern standardmäßig auch deren Höhe durch stretch (das ist die Standardeinstellung)*/
+    /*flex-direction: column;*/
     flex: 0 0 90px;
+    justify-content: space-between;
+    align-items: flex-start;                        /*hier wird der Effekt von "display:flex" (Anpassung der Höhe der Kinder) afgehoben*/
     border-radius: 10px;
     padding: 20px;
     border: 1px solid rgba(0,0,0,0.17);
@@ -260,13 +267,106 @@ body
         0 6px 12px rgba(0,0,0,0.08);
 }
 
-.task:focus                                         /* .task = alle Elemente mit der Klasse task */
+.task-main
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.task-title
+{
+    font-size: 17px;
+    font-weight: 550;
+    color: black;
+}
+
+.task-title:focus                                   /* .task-title = alle Elemente mit der Klasse task-title */
                                                     /* :focus = Das ist ein sogenannter Pseudo-State | Wenn dieses Element gerade aktiv/fokussiert ist */
 {
     outline: none;                                  /* outline = Das ist der Browser-Fokusrahmen */
                                                     /* none = Zeige keinen Standardrahmen */
-    border: 1px solid rgba(255,255,255,0.25);
-    box-shadow: 0 0 0 4px rgba(255,255,255,0.06);   
+    font-weight: 650;
+
+    /*border: 1px solid rgba(255,255,255,0.9);*/
+    /*box-shadow: 0 0 0 4px rgba(255,255,255,0.02);*/ 
+}
+
+.task-title:empty::before,
+.date span:empty::before,
+.location span:empty::before
+{
+    content: attr(data-placeholder);
+    color:#888;
+}
+
+.task-meta
+{
+    margin-top: 8px;
+
+    font-size: 17px;
+    font-weight: 200;
+    color: black;
+}
+
+.date
+{
+    display: flex;
+    flex-direction: row;
+
+    margin-top: 16px;
+    margin-bottom: 8px;
+
+    gap: 6px;
+
+    font-size: 14px;
+    font-weight: 550;
+    color: #777;
+}
+
+.date svg
+{
+    height: 14px;
+    width: 14px;
+}
+
+.location
+{
+    display: flex;
+    flex-direction: row;
+   
+    margin-top: 8px;
+    margin-bottom: 8px;
+
+    gap: 6px; 
+
+    font-size: 14px;
+    font-weight: 550;
+    color: #777;
+}
+
+.location svg
+{
+    height: 14px;
+    width: 14px;
+}
+
+.task-status
+{
+    display: flex;
+    align-self: end;
+    margin-bottom: 8px;
+
+    gap: 6px;
+
+    font-size: 14px;
+    font-weight: 550;
+    color: #777;
+}
+
+.task-status svg
+{
+    height: 14px;
+    width: 14px;
 }
 
 .bucket1
@@ -302,23 +402,26 @@ body
     /*background: 
     linear-gradient(135deg, #ffffff, #f3eee6),
     radial-gradient(circle at 20% 20%, rgba(255, 255, 255,0.4), transparent 40%);*/
-    font-size: 17px;
-    font-weight: 550;
-    color: black;
 }
 
 .bucket2
 {
     color: black;
     background-color: #ffffff;
+    transition: box-shadow 0.3s ease;               /*transition: transform 0.3s ease;*/
+}
+
+.bucket2:hover
+{
+    /*transform: scale(1.015)*/
+     box-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.14),
+        2px 6px 16px rgba(0,0,0,0.16);
 }
 
 .year-task
 {
     background: #f5f5f7;  
-    font-size: 17px;
-    font-weight: 550;
-    color: black;
 }
 
 .bucket3
@@ -326,14 +429,20 @@ body
     
     color: black;
     background-color: #ffffff;
+    transition: box-shadow 0.3s ease;               /*transition: transform 0.3s ease;*/
+}
+
+.bucket3:hover
+{
+    /*transform: scale(1.015)*/
+     box-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.14),
+        2px 6px 16px rgba(0,0,0,0.16);
 }
 
 .today-task
 { 
     background: #f5f5f7; 
-    font-size: 17px;
-    font-weight: 550;
-    color: black;
 }
 
 .bucket4
@@ -344,12 +453,18 @@ body
     background: linear-gradient(90deg, #b9adc2 0.000%, #c6bdcc 16.667%, #cbc7d4 33.333%, #c9cbd9 50.000%, #c1c9dc 66.667%, #b1bfdb 83.333%, #9db0d8 100.000%);
 }
 
+.bucket4:hover
+{
+    /*transform: scale(1.015)*/
+     box-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.14),
+        2px 6px 16px rgba(0,0,0,0.16);
+        transition: box-shadow 0.3s ease;               /*transition: transform 0.3s ease;*/
+}
+
 .kids-task
 {
     background: #f5f5f7; 
-    font-size: 17px;
-    font-weight: 550;
-    color: black;
 }
 
 
@@ -367,6 +482,7 @@ h2
 {
     font-size: 24px;                                /* font-size = Schriftgröße */
     margin: 0;                                      /* margin-bottom = Außenabstand unten */
+    padding: 0;
 }
 
 /*#######################*/
@@ -410,28 +526,107 @@ p
     align-items: center;
 }
 
-.modal-content
+.modalContent
 {
+    display: flex;
+    flex-direction: column;
+    position: relative;
     width: min(90%, 700px);                         /* Nimm den kleineren Wert ==> 90 % auf Mobile, da nur 360 px darstellbar, auf normalem Monitor der mehr als 700 kann nimm 700 px. Bspw. 1400 zu viel. Responsive aber nicht riesig.*/
     min-height: 300px;                              /* Später wächst Karte automatisch mit Inhalt */ 
     background: white;
     border-radius: 32px;
     padding: 32px;
     box-sizing: border-box;                         /* Padding zählt zur Gesamtbreite dazu. */
+    margin: 0;
 }
 
-.modal.open                                         /* wenn das Modal zusätzlich die Klasse "open" hat, wird es sichtbar, solange unter .modal als dispalay= none definiert = unsichtbar*/
+#modalTitle
+{   
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+}
+
+#modalTitle:focus                                   
+{
+    outline: none;                                  
+    font-weight: 750;
+}
+
+#modalTitle:empty::before                           /*Nimm das Element in der ID modalTitle (#modalTitle), aber nur, wenn es leer ist (:empty), und erzeuge davor einen sichtbaren Inhalt(::before).*/
+{                                                   /*bei <input> wie location oder date nicht nötig, da ein <input> seinen Placeholder selbst anzeigen kann*/
+    content: attr(data-placeholder);                /*content besimmt, was in ::before angezeigt wird. attr = attribute und liest den WErt eines HTMS-Attributes aus.*/
+    color:#888;
+}
+
+.modal.open                                         /* wenn das Modal zusätzlich die Klasse "open" hat, wird es sichtbar, solange unter .modal als dispalay  = none definiert = unsichtbar*/
 {
     display: flex;
 }
 
-.modal-close
+.modal-close                                        /* Styling des "X"-Buttons*/
 {
+    position: absolute;                             /* absolute positioniert sich relativ zum nächsten relativ zum nächsten relativ Elternteil. Hier modal-content*/
+    top: 24px;
+    right:24px;
     border-radius: 5px;
-    margin-bottom: 20px;
+}
 
+.modalBody
+{
     display: flex;
-    justify-self: end;
+    padding-top: 32px;
+    gap: 48px;
+}
+
+.modalInfo
+{
+    display: flex;
+    flex-direction: column;
+
+    font-size: 22px;
+    color: #777;
+    gap: 16px;
+}
+
+.icons
+{
+    width: 1em;
+    height: 1em;   
+}
+
+.modalInfo input
+{
+    font-size: inherit;
+    border: none;
+    border-radius: 16px;
+    outline: none;
+    background-color: #f5f5f5;
+    padding-left: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.modalChecklist
+{
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px;
+}
+
+.modalChecklist input
+{
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    background-color: #f5f5f5;
+    padding-left: 8px;  
+}
+
+.modalChecklist input[type="checkbox"]:checked + input[type="text"] /*Wenn die Checkbox angehakt ist, style das direkt danach kommende Textfeld*/
+{
+    text-decoration: line-through;
+    color: #999;
 }
 
 /*#######################*/
