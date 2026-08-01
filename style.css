@@ -255,7 +255,7 @@ body
 .task
 {
     display: flex;                                  /*"display: flex" verändert nicht nur die Anordnung der Kinder, sondern standardmäßig auch deren Höhe durch stretch (das ist die Standardeinstellung)*/
-    /*flex-direction: column;*/
+    flex-direction: column;
     flex: 0 0 90px;
     justify-content: space-between;
     align-items: flex-start;                        /*hier wird der Effekt von "display:flex" (Anpassung der Höhe der Kinder) afgehoben*/
@@ -268,9 +268,10 @@ body
 }
 
 .task-main
-{
+{    
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .task-title
@@ -278,6 +279,7 @@ body
     font-size: 17px;
     font-weight: 550;
     color: black;
+    width: 100%;
 }
 
 .task-title:focus                                   /* .task-title = alle Elemente mit der Klasse task-title */
@@ -297,11 +299,15 @@ body
 {
     content: attr(data-placeholder);
     color:#888;
+    width: 100%;
 }
 
 .task-meta
 {
-    margin-top: 8px;
+    display: flex;
+    flex-direction: column; 
+    gap: 8px;
+    
 
     font-size: 17px;
     font-weight: 200;
@@ -313,11 +319,8 @@ body
     display: flex;
     flex-direction: row;
 
-    margin-top: 16px;
-    margin-bottom: 8px;
-
     gap: 6px;
-
+    
     font-size: 14px;
     font-weight: 550;
     color: #777;
@@ -333,11 +336,8 @@ body
 {
     display: flex;
     flex-direction: row;
-   
-    margin-top: 8px;
-    margin-bottom: 8px;
 
-    gap: 6px; 
+    gap: 6px;
 
     font-size: 14px;
     font-weight: 550;
@@ -353,8 +353,9 @@ body
 .task-status
 {
     display: flex;
+    flex-shrink: 0;
+    white-space: nowrap;
     align-self: end;
-    margin-bottom: 8px;
 
     gap: 6px;
 

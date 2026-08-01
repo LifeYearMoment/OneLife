@@ -53,11 +53,13 @@ function definiereStorageKeys(index)
     const taskTitleStorageKey = "taskTitle-" + index;                       //string "taskTitle-" wird durch + mit index zu einem zusammenhängenden String zusammengesetzt. Der Index wird dabei zu Text umgebaut.
     const taskDateStorageKey = "taskDate-" + index;                         //Die Variable wird innerhalb der Schleife definiert (lokale Variable), da für jeden Task eine gesonderte Speichervariable definiert werden soll 
     const taskLocationStorageKey = "taskLocation-" + index;                 //storageKey = Speichername z.B. taskTitle-0                                                   
-                                                                            //Speichere den aktuellen Text dieses Tasks unter seinem eigenen Namen im Browser
+    const taskLinkStorageKey = "taskLink-" + index;                         //Speichere den aktuellen Text dieses Tasks unter seinem eigenen Namen im Browser
+    
     return{
         taskTitleStorageKey,
         taskDateStorageKey,
-        taskLocationStorageKey
+        taskLocationStorageKey,
+        taskLinkStorageKey
     };  
 }
 
@@ -202,6 +204,12 @@ function durchlaufeTasks(task, index)
             return;                                                                                 //Verlässt Funktion
         }   
         
+        //AKTUELLEN TASK FÜR RÜCKSPEICHERN VON MODAL IN TASK
+        //##################################################
+                                                                            
+        currentTask = task;                                                 //aktuellen Task speichern, um bei einer Eingabe im Modal diese in den richtigen Task zu speichern 
+        currentIndex = index;                                               //aktuellen Index speichern, um richtigen StorageKey zu setzen.
+
         uebertrageTaskDatenInModal();  
 
     }task.addEventListener("click", entscheideOeffneModal);    
@@ -212,6 +220,9 @@ function durchlaufeTasks(task, index)
     function uebertrageTaskDatenInModal()                                               
                                                                             
     {                                                             
+        //TITLE
+        //#####
+
         if(task.querySelector(".task-title").innerText.trim() !== "")
         {
             modalTitle.innerText = task.querySelector(".task-title").innerText;                     //Ansonsten greift CSS Z:554 und zeigt Platzhalter an
@@ -219,18 +230,35 @@ function durchlaufeTasks(task, index)
         {
             modalTitle.innerHTML = "";
         }
-          
+         
+        //LOCATION
+        //########
+        
         modalLocation.value = task.querySelector(".location span").innerText;                       //bei Inputfeldern braucht es keinen CSS-Befehl, da hier direkt der HTML-Platzhalter greift, sollte keine User-Eingabe bestehen.
                                                                                                     //bei Inputfeldern gibt es kein <br>-Problem, darum innerHTML = ""; nich nötig. 
                                                                                                     //die Bereinigung von Leerzeichen geschiet bereits beim Rückspeichern vom Modal in den Task, daurm beim Öffnen und Laden aus dem Task nicht mehr nötig, da bereits sauber.
-                                                                                                    //span, um gezielt nur den Text auszulesen oder zu beschreiben. Das SVG bleibt davon unberührt. Vor allem beim Beschreiben wichtig, sodass das svg nicht überschrieben und gelöscht wird. 
+                                                                                                    //span, um gezielt nur den Text auszulesen oder zu beschreiben. Das SVG bleibt davon unberührt. Vor allem beim Beschreiben wichtig, sodass das svg nicht überschrieben und gelöscht wird.
+         
+        //DATE
+        //####
+
         modalDate.value = formatiereDatumFuerInternenSpeicher(task.querySelector(".date span").innerText);
 
-        //AKTUELLEN TASK FÜR RÜCKSPEICHERN VON MODAL IN TASK
-        //##################################################
-                                                                            
-        currentTask = task;                                                 //aktuellen Task speichern, um bei einer Eingabe im Modal diese in den richtigen Task zu speichern 
-        currentIndex = index;
+        //LINK
+        //####
+
+        const storageKeys = definiereStorageKeys(currentIndex); 
+        const savedTaskLink = localStorage.getItem(storageKeys.taskLinkStorageKey);                 //beim Lesen (getItem) vom localStorage nur Key übergeben, beim Schreiben, also setItem den Key und den Wert. Beim Lesen kann ja nur der gespeicherte Wert ausgelesen werden. Keine Angabe nötig.
+
+        if(savedTaskLink !== null && savedTaskLink.trim() !== "")
+        {
+            modalLink.value = savedTaskLink;
+        }else
+        {
+            modalLink.value = "";
+        }
+        
+
         modal.classList.add("open");                                                                    
     };                                                                      
     
@@ -269,7 +297,7 @@ function speichereModalDateInTask()
 modalDate.addEventListener("input", speichereModalDateInTask);
 
 //########################## 
-//SPEICHERE IN LOCAL STORAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//SPEICHERE IN LOCAL STORAGE
 //##########################
 
 //TASK
@@ -318,6 +346,16 @@ function speichereModalDateAenderungen()
     localStorage.setItem(storageKeys.taskDateStorageKey, modalDate.value);
 }
 modalDate.addEventListener("input", speichereModalDateAenderungen);
+
+//LINK
+//####
+
+function speichereModalLinkAenderungen()
+{
+    const storageKeys = definiereStorageKeys(currentIndex);
+    localStorage.setItem(storageKeys.taskLinkStorageKey, modalLink.value);
+}
+modalLink.addEventListener("input", speichereModalLinkAenderungen);
 
 //###############
 //MODAL SCHLIEßEN
