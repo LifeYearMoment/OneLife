@@ -539,6 +539,7 @@ p
     padding: 32px;
     box-sizing: border-box;                         /* Padding zählt zur Gesamtbreite dazu. */
     margin: 0;
+    justify-content: center;
 }
 
 #modalTitle
@@ -620,11 +621,31 @@ p
     background-color: transparent;
 }
 
+/*###########*/
+/*CHECKLISTEN*/
+/*###########*/
+
 .modalChecklist
 {
     display: flex; 
     flex-direction: column; 
     gap: 16px;
+}
+
+.checkVisitTitle
+{
+    margin-bottom: 10px;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.checkToDoTitle
+{
+    margin-bottom: 10px;
+
+    font-size: 12px;
+    font-weight: 500;
 }
 
 .modalChecklist input
@@ -653,6 +674,7 @@ p
     top: 24px;
     right:24px;
     border-radius: 5px;
+    margin: 0px;                                    /*!!!!!!!!!!!!!!!!!!!!!Unten ist Platz, der weg muss */
 }
 
 /*#######################*/
