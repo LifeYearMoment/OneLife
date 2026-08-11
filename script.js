@@ -38,11 +38,13 @@ let currentIndex = null;
 
 const modal = document.querySelector("#taskModal");                         //Suche das Eelment mit der id="taskModal". Die Variable modal enthält jetzt das komplette Modal HTML-Element
 const modalTitle = document.querySelector("#modalTitle");                   //Unterschied querySelector und querySelectoAll. Ohne "All" keine Liste, sondern einzelne Elemente
+const modalDate = document.querySelector("#modalDate");
+const modalLocation = document.querySelector("#modalLocation");
 const modalClose = document.querySelector("#modalClose");
 
 let mouseDownOnModalBackground = false;
 
-const modalLocation = document.querySelector("#modalLocation");
+
 
 //########################################
 //          Gobale Functionen
@@ -95,9 +97,13 @@ function formatiereDatumFuerInternenSpeicher(datumIntern)
     return jahr + "-" + monat + "-" + tag;
 }
 
-//######################################################################
-//INITIALES LADEN DES GESPEICHERTEN TEXTES VON TASK-TITEL, DATUM UND ORT
-//######################################################################                                                                         
+//##############
+//INITIALISIEREN
+//##############
+
+//====
+//TASK
+//====
 
 function initialisiereTasks(task, index)
 {
@@ -141,6 +147,48 @@ function initialisiereTasks(task, index)
 }   
 tasks.forEach(initialisiereTasks);
 
+//COUNTDOWN
+//######### 
+
+function countdownZaehler(task)
+{
+    const taskDateText = task.querySelector(".date span").innerText;
+
+    if (taskDateText === "")
+    {
+        task.querySelector(".countdown span").innerText = "Ohne Termin";
+        return;
+    }
+
+    const taskDate = new Date(formatiereDatumFuerInternenSpeicher(taskDateText));               //"23.05.2026" wird zu "2026-05-23", und wird mit new Date() aus Text zum Date-Objekt, das man für die Differenzbildung benötigt. Nur new Date() erzeugt das heutige Datum 
+    const dateToday = new Date();
+    
+    const timeRemaining_ms = taskDate - dateToday;
+    const timeRemaining_s = Math.ceil(timeRemaining_ms/1000);
+    const timeRemaining_min = Math.ceil(timeRemaining_ms/1000/60);
+    const timeRemaining_h = Math.ceil(timeRemaining_ms/1000/60/60);
+    const timeRemaining_day = Math.ceil(timeRemaining_ms/1000/60/60/24);
+
+    if(timeRemaining_day === 0)
+        {
+            task.querySelector(".countdown span").innerText = " HEUTE";
+        }
+            else if(timeRemaining_day < 0)
+            {
+                task.querySelector(".countdown span").innerText = " VORBEI";
+            }
+                else
+                {
+                    task.querySelector(".countdown span").innerText = timeRemaining_day + " Tage";
+                }
+}
+
+function aktualisiereZaehler()
+{
+    tasks.forEach(countdownZaehler);
+
+}aktualisiereZaehler();                                                                         //wichtig für erste Ausführung zum Zeitpunkt t = 0 s.
+setInterval(aktualisiereZaehler, 1000);                                                         //führt ab der ersten Sekunde, jede weitere s aus.
 
 //#################
 //EDITIERBAR MACHEN
@@ -244,6 +292,8 @@ function durchlaufeTasks(task, index)
 
         modalDate.value = formatiereDatumFuerInternenSpeicher(task.querySelector(".date span").innerText);
 
+        placeholderModalDateHidden();
+        
         //LINK
         //####
 
@@ -295,6 +345,11 @@ function speichereModalDateInTask()
     currentTask.querySelector(".date span").innerText = formatiereDatumFuerAnzeige(modalDate.value); 
 }
 modalDate.addEventListener("input", speichereModalDateInTask);
+
+//COUNTDOWN
+//#########
+
+modalDate.addEventListener("input", aktualisiereZaehler);
 
 //########################## 
 //SPEICHERE IN LOCAL STORAGE
@@ -390,7 +445,28 @@ document.addEventListener("keydown", (event) =>
     }
 });
 
+//MODAL DATE STYLEN
+//#################
 
+function oeffneDatePicker()
+{    
+    if (modalDate.showPicker)                                               //Sicherheitsprüfun. "showPicker" ist eine Methode des Date-Inputs, mit der JavaScript den nativen Kalender öffnen kann. Hier Abfrage, ob modal Date überhaupt die Funktion showPicker besitzt. Wenn der Brwoser unterstützt, dann wahr
+    {
+        modalDate.showPicker();
+    }
+}modalDate.addEventListener("click", oeffneDatePicker);
+console.log(modalDate.value);
+
+function placeholderModalDateHidden()
+{
+    if(modalDate.value === "")
+    {
+        modalDate.classList.add("dateHidden");
+    }else
+    {
+        modalDate.classList.remove("dateHidden");
+    }
+}modalDate.addEventListener("input", placeholderModalDateHidden);
 
 // ########## TO-DO ###########
 
@@ -401,6 +477,9 @@ document.addEventListener("keydown", (event) =>
 //Metadaten hinzufügen
 //Neue Tasks durch Nutzer hinzufügen
 //Wenn auf Link in Task geklickt, soll der Focus im Modal direkt auf den Link sein und kein weiterer Klick notwendig
+//Timer immer granularer, je näher Event kommt. Ggf. Zahl groß, Einheit darunter kleiner
+//Hinweis, wenn Location, Date, Link oder sonstiges einen Eintrag hat, ohne, dass der Titel angegeben wurde.
+
 
 
 //######### Beispielfunktion ###########

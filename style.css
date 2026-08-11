@@ -560,19 +560,6 @@ p
     color:#888;
 }
 
-.modal.open                                         /* wenn das Modal zusätzlich die Klasse "open" hat, wird es sichtbar, solange unter .modal als dispalay  = none definiert = unsichtbar*/
-{
-    display: flex;
-}
-
-.modal-close                                        /* Styling des "X"-Buttons*/
-{
-    position: absolute;                             /* absolute positioniert sich relativ zum nächsten relativ zum nächsten relativ Elternteil. Hier modal-content*/
-    top: 24px;
-    right:24px;
-    border-radius: 5px;
-}
-
 .modalBody
 {
     display: flex;
@@ -590,12 +577,6 @@ p
     gap: 16px;
 }
 
-.icons
-{
-    width: 1em;
-    height: 1em;   
-}
-
 .modalInfo input
 {
     font-size: inherit;
@@ -606,6 +587,37 @@ p
     padding-left: 16px;
     padding-top: 8px;
     padding-bottom: 8px;
+}
+
+.icons
+{
+    width: 1em;
+    height: 1em;   
+}
+
+#modalDate::-webkit-calendar-picker-indicator
+{
+    opacity:0;
+}
+
+#modalDate.dateHidden::-webkit-datetime-edit,
+#modalDate.dateHidden:focus::-webkit-datetime-edit,
+#modalDate.dateHidden::-webkit-datetime-edit-day-field,
+#modalDate.dateHidden::-webkit-datetime-edit-month-field,
+#modalDate.dateHidden::-webkit-datetime-edit-year-field
+{
+    color: transparent;
+    background-color: transparent;
+}
+
+#modalDate::-webkit-datetime-edit,
+#modalDate:focus::-webkit-datetime-edit,
+#modalDate::-webkit-datetime-edit-day-field,
+#modalDate::-webkit-datetime-edit-month-field,
+#modalDate::-webkit-datetime-edit-year-field
+{
+    color: black;
+    background-color: transparent;
 }
 
 .modalChecklist
@@ -628,6 +640,19 @@ p
 {
     text-decoration: line-through;
     color: #999;
+}
+
+.modal.open                                         /* wenn das Modal zusätzlich die Klasse "open" hat, wird es sichtbar, solange unter .modal als dispalay  = none definiert = unsichtbar*/
+{
+    display: flex;
+}
+
+.modal-close                                        /* Styling des "X"-Buttons*/
+{
+    position: absolute;                             /* absolute positioniert sich relativ zum nächsten relativ zum nächsten relativ Elternteil. Hier modal-content*/
+    top: 24px;
+    right:24px;
+    border-radius: 5px;
 }
 
 /*#######################*/
