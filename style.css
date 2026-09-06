@@ -170,7 +170,7 @@ body
 
 .bucket-wrapper::-webkit-scrollbar 
 {
-    display:none
+    display: none;
 }
 
 .bucket-track
@@ -628,24 +628,7 @@ p
 .modalChecklist
 {
     display: flex; 
-    flex-direction: column; 
-    gap: 16px;
-}
-
-.checkVisitTitle
-{
-    margin-bottom: 10px;
-
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.checkToDoTitle
-{
-    margin-bottom: 10px;
-
-    font-size: 12px;
-    font-weight: 500;
+    flex-direction: column;
 }
 
 .modalChecklist input
@@ -662,6 +645,131 @@ p
     text-decoration: line-through;
     color: #999;
 }
+
+/*CHECK VISIT*/
+/*###########*/
+
+.checkVisit
+{
+    display: flex; 
+    flex-direction: column;
+    margin-bottom: 8px;
+    gap: 3px;
+}
+
+.checkVisitTitle
+{
+    margin-bottom: 10px;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.checklistVisit
+{
+    display: flex;
+    align-items:center;
+}
+
+#hideVisitButton
+{
+    display: flex;
+    justify-content: space-between;
+    
+    font-family: inherit;                                           /*Browserstyling bei button lässt sich nicht einfach überschreiben. Inherit hebt es auf und sagt, beziehe Syling vom Elternelement. Alles was explizit gesetzt wird, wir dann wieder überschrieben*/
+    margin-bottom: 4px;
+    max-height: 16px;
+
+    border: none;
+    background-color: transparent; 
+    
+    font-size: 11px;
+    font-weight: 450;
+}
+
+#hideVisitButton.ausgeblendet
+{
+    display: none;
+}
+
+#hideVisitButtonLeft
+{
+    display: flex;
+    gap: 8px;
+
+    font-family: inherit; 
+}
+
+#hideVisitButtonRight
+{
+    font-family: inherit;                                              /*übernehme Styling von Elternelement #hideVisitButton*/                                                                                           
+}
+
+.checkVisitDoneContent
+{
+    padding-right: 4px; 
+
+    border: none;
+    border-radius: 8px;
+    outline: none;
+
+    background: linear-gradient(90deg, #ebdfdb 0.000%, #ebdfdb 16.667%, #ebdfdb 33.333%, #ebdfdb 50.000%, #ebdfdb 66.667%, #ebdfdb 83.333%, #ebdfdb 100.000%);
+
+    overflow: hidden;
+
+    
+    
+}
+
+.checkVisitDoneContent.aktiviereTransitionHidden
+{
+    transition: max-height 0.4s ease;
+}
+
+.checkVisitDoneContent.ausgeblendet
+{
+    max-height: 0;
+    padding: 0;
+    border: none;
+}
+
+.checkVisitDoneInner
+{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-bottom: 4px;  
+    padding-top: 4px;  
+}
+
+.checkVisitDoneInner.ausgeblendet
+{
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    padding-bottom: 0px;  
+    padding-top: 0px;  
+}
+
+/*CHECK TO DO*/
+/*###########*/
+
+.checkToDo
+{
+    margin-top: 16px;
+}
+
+.checkToDoTitle
+{
+    margin-bottom: 10px;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/*################*/
+/*MODAL OPEN/CLOSE*/
+/*################*/
 
 .modal.open                                         /* wenn das Modal zusätzlich die Klasse "open" hat, wird es sichtbar, solange unter .modal als dispalay  = none definiert = unsichtbar*/
 {

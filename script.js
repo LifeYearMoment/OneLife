@@ -42,6 +42,14 @@ const modalDate = document.querySelector("#modalDate");
 const modalLocation = document.querySelector("#modalLocation");
 const modalClose = document.querySelector("#modalClose");
 
+const checkVisitDoneContent = document.querySelector(".checkVisitDoneContent");
+const checkVisitDoneInner = document.querySelector(".checkVisitDoneInner");
+let AnzahlCheckboxVisitDone = checkVisitDoneInner.querySelectorAll(".checkboxVisit").length;
+const hideVisitButton = document.querySelector("#hideVisitButton");
+const checklistVisits = document.querySelectorAll(".checklistVisit");
+
+const checklistVisitArray = [];
+
 let mouseDownOnModalBackground = false;
 
 
@@ -56,12 +64,14 @@ function definiereStorageKeys(index)
     const taskDateStorageKey = "taskDate-" + index;                         //Die Variable wird innerhalb der Schleife definiert (lokale Variable), da für jeden Task eine gesonderte Speichervariable definiert werden soll 
     const taskLocationStorageKey = "taskLocation-" + index;                 //storageKey = Speichername z.B. taskTitle-0                                                   
     const taskLinkStorageKey = "taskLink-" + index;                         //Speichere den aktuellen Text dieses Tasks unter seinem eigenen Namen im Browser
-    
+    const checkVisitStorageKey = "checkVisit-" + index;
+
     return{
         taskTitleStorageKey,
         taskDateStorageKey,
         taskLocationStorageKey,
-        taskLinkStorageKey
+        taskLinkStorageKey,
+        checkVisitStorageKey
     };  
 }
 
@@ -111,7 +121,7 @@ function initialisiereTasks(task, index)
     const savedTaskTitle = localStorage.getItem(storageKeys.taskTitleStorageKey);       //Hole den Text von TaskTitle 0-x aus dem lokalen Speicher und weise ihn der Variable savedText zu
     const savedTaskDate = localStorage.getItem(storageKeys.taskDateStorageKey);         //!!!!Der local Storage ist mein Schrank, taskTitle-0 der Aufkleber auf der Schublade. Sodass ich die Schublade ansprechen kann, um etwas hineinzulegen oder geziehlt wieder rauszuholen mit get/setItem
     const savedTaskLocation = localStorage.getItem(storageKeys.taskLocationStorageKey); //Im ersten Durchlauf ist savedText noch nicht beschrieben da ich den local storage noch nicht beschrieben habe und damit ist saved Text = 0
-    
+
     //TASK-TITLE
     //##########
 
@@ -146,6 +156,30 @@ function initialisiereTasks(task, index)
     }
 }   
 tasks.forEach(initialisiereTasks);
+
+//MODAL-CHECKLIST-VISIT
+    //#####################
+
+function initialisiereChecklistVisit(checklistVisit, index)
+{
+    
+    const storageKeys = definiereStorageKeys(index);
+    const savedChecklistVisit = JSON.parse(localStorage.getItem(storageKeys.checkVisitStorageKey));
+
+    console.log("index:", index);
+    console.log("savedChecklistVisit:", savedChecklistVisit);
+
+   if (savedChecklistVisit !== null && savedChecklistVisit[index] !== undefined)  
+    
+    {                                                                       
+        checklistVisit.querySelector(".checklistVisitText").value = savedChecklistVisit[index].text;     
+    }                                                                       
+        else
+        {
+            checklistVisit.querySelector(".checklistVisitText").value = "";               
+        }                                                                
+}   
+checklistVisits.forEach(initialisiereChecklistVisit);
 
 //COUNTDOWN
 //######### 
@@ -243,7 +277,7 @@ function durchlaufeTasks(task, index)
         mouseUpEndeImTaskTitel = event.target.closest(".task-title") !== null;
     }task.addEventListener("mouseup", pruefeEndeDesKlicks);
 
-    function entscheideOeffneModal(event)
+    function entscheideOeffneModal()
     {
         if(mouseDownBeginnImTaskTitel || mouseUpEndeImTaskTitel)                                    //wenn der Mausvorgang im Titel begonnen oder im Titel geendet hat, öffne das Modal nicht
         {
@@ -255,8 +289,8 @@ function durchlaufeTasks(task, index)
         //AKTUELLEN TASK FÜR RÜCKSPEICHERN VON MODAL IN TASK
         //##################################################
                                                                             
-        currentTask = task;                                                 //aktuellen Task speichern, um bei einer Eingabe im Modal diese in den richtigen Task zu speichern 
-        currentIndex = index;                                               //aktuellen Index speichern, um richtigen StorageKey zu setzen.
+        currentTask = task;                                                                         //aktuellen Task speichern, um bei einer Eingabe im Modal diese in den richtigen Task zu speichern 
+        currentIndex = index;                                                                       //aktuellen Index speichern, um richtigen StorageKey zu setzen.
 
         uebertrageTaskDatenInModal();  
 
@@ -412,6 +446,35 @@ function speichereModalLinkAenderungen()
 }
 modalLink.addEventListener("input", speichereModalLinkAenderungen);
 
+//CHECKBOX
+//########
+
+//CHECKBOX VISIT
+
+function speichereModalCheckboxVisitAenderungen(checklistVisit, index)
+{
+    function checklistVisitTextEventInput(event)
+    {
+        checklistVisitArray[index] = 
+        {
+            checked: checklistVisit.querySelector(".checkboxVisit").checked,
+            text: checklistVisit.querySelector(".checklistVisitText").value
+        };
+
+        //console.log(index);
+        //console.log(checklistVisitArray);
+
+        const storageKeys = definiereStorageKeys(index);
+        //console.log(storageKeys.checkVisitStorageKey);
+
+        localStorage.setItem(storageKeys.checkVisitStorageKey, JSON.stringify(checklistVisitArray));
+        //console.log(localStorage.getItem(storageKeys.checkVisitStorageKey));
+    }checklistVisit.querySelector(".checklistVisitText").addEventListener("input", checklistVisitTextEventInput);
+    
+    
+}checklistVisits.forEach(speichereModalCheckboxVisitAenderungen);
+
+
 //###############
 //MODAL SCHLIEßEN
 //###############
@@ -445,6 +508,7 @@ document.addEventListener("keydown", (event) =>
     }
 });
 
+//#################
 //MODAL DATE STYLEN
 //#################
 
@@ -468,18 +532,138 @@ function placeholderModalDateHidden()
     }
 }modalDate.addEventListener("input", placeholderModalDateHidden);
 
+//###############
+//MODAL CHECKLIST
+//###############
+
+const hideVisitButtonNumber = document.querySelector("#hideVisitButtonNumber");
+hideVisitButtonNumber.innerHTML = AnzahlCheckboxVisitDone;
+const hideVisitButtonTitle = document.querySelector("#hideVisitButtonTitle");
+hideVisitButtonTitle.innerHTML = "Erlebt";
+
+//CHECKLIST ITEM AUSBLENDEN
+//#########################
+
+const checkboxes = document.querySelectorAll(".checkboxVisit");
+
+if(AnzahlCheckboxVisitDone === 0)
+{
+    document.querySelector("#hideVisitButton").classList.add("ausgeblendet");
+}
+
+function checklistItemAusblenden (checkboxVisit, index)
+{
+    function pruefeCheckboxAktiv (event)
+    {
+        if(event.target.checked === true)
+        {
+            //console.log("checkbox aktiviert");
+            document.querySelector(".checkVisitDoneInner").append(event.target.closest(".checklistVisit"));
+            AnzahlCheckboxVisitDone = checkVisitDoneInner.querySelectorAll(".checkboxVisit").length;
+            document.querySelector("#hideVisitButton").classList.remove("ausgeblendet");
+            hideVisitButtonNumber.innerHTML = AnzahlCheckboxVisitDone;
+            //console.log(AnzahlCheckboxVisitDone);
+
+            if(checkVisitDoneContent.classList.contains("ausgeblendet") !== true)
+            {
+                checkVisitDoneInner.classList.remove("ausgeblendet");
+                checkVisitDoneContent.style.maxHeight = checkVisitDoneContent.scrollHeight + "px";
+            }else 
+            {
+                checkVisitDoneContent.style.maxHeight = "0px";
+            }
+        }else
+        {
+            //console.log("checkbox deaktiviert");
+            
+            if(checkVisitDoneContent.classList.contains("ausgeblendet") !== true)                                            //Wenn Fenster "Erledig" geöffnet
+            {
+                checkVisitDoneContent.style.maxHeight = checkVisitDoneContent.scrollHeight + "px";
+                document.querySelector(".checkVisit").append(event.target.closest(".checklistVisit"));                  //Wenn Checkbox Haken entfernt, dann nimm nicht nur Checkbox, sondern komplettes Element mit Text und verschiebe es
+                AnzahlCheckboxVisitDone = checkVisitDoneInner.querySelectorAll(".checkboxVisit").length;
+
+                if(AnzahlCheckboxVisitDone === 0)
+                {
+                    document.querySelector("#hideVisitButton").classList.add("ausgeblendet");                           //Button ausblenden 
+                    hideVisitButtonArrow.innerHTML = "&#709";
+                    checkVisitDoneContent.classList.add("ausgeblendet");
+
+                    checkVisitDoneContent.style.height = "";
+                    checkVisitDoneContent.style.maxHeight = "";
+                }
+
+                hideVisitButtonNumber.innerHTML = AnzahlCheckboxVisitDone;
+                //console.log(AnzahlCheckboxVisitDone);
+
+                if(checkVisitDoneInner.querySelector(".checkboxVisit") === null)
+                {
+                    checkVisitDoneInner.classList.add("ausgeblendet");                     //Padding entfernen
+                    //console.log("Keine Checkbox in Hidden");
+                }            
+            }
+        }
+    }checkboxVisit.addEventListener("change", pruefeCheckboxAktiv);
+}checkboxes.forEach(checklistItemAusblenden);
+
+//AUSGEBLENDETER BEREICH AUF- UND ZUKLAPPEN
+//#########################################
+
+document.querySelector(".checkVisitDoneContent").classList.add("ausgeblendet");
+
+const hideVisitButtonArrow = document.querySelector("#hideVisitButtonArrow");
+hideVisitButtonArrow.innerHTML = "&#709";
+
+function openCloseHideSection ()
+{
+    checkVisitDoneContent.classList.add("aktiviereTransitionHidden");
+    checkVisitDoneContent.classList.toggle("ausgeblendet");                                      //wechselt zwischen hinzufügen und löschen von "auseblendet"  
+    
+
+    if(checkVisitDoneContent.classList.contains("ausgeblendet") === true)
+    {
+        checkVisitDoneContent.style.maxHeight = "0px";
+        hideVisitButtonArrow.innerHTML = "&#709";
+    }else
+    {
+         if(checkVisitDoneInner.querySelector(".checkboxVisit") === null)
+        {
+            document.querySelector(".checkVisitDoneInner").classList.add("ausgeblendet");
+            //console.log("Keine Checkbox in Hidden");
+        }else
+        {
+            document.querySelector(".checkVisitDoneInner").classList.remove("ausgeblendet");
+        }
+        checkVisitDoneContent.style.maxHeight = checkVisitDoneContent.scrollHeight + "px";
+        hideVisitButtonArrow.innerHTML = "&#708 ";
+
+        function transitionEnfernen()
+        {
+            checkVisitDoneContent.classList.remove("aktiviereTransitionHidden");
+        }checkVisitDoneContent.addEventListener("transitionend", transitionEnfernen, {once: true});
+    }
+    
+    //console.log(checkVisitDoneContent.scrollHeight);
+    
+}hideVisitButton.addEventListener("click", openCloseHideSection);
+
+
 // ########## TO-DO ###########
+
+//Checkliste animiert auf und zuklappen. Aktuell mittels css Notlösung gemacht.
+//Neue Tasks durch Nutzer hinzufügen
+//Wenn auf Link in Task geklickt, soll der Focus im Modal direkt auf den Link sein und kein weiterer Klick notwendig
+//Timer immer granularer, je näher Event kommt. Ggf. Zahl groß, Einheit darunter kleiner
+//Hinweis, wenn Location, Date, Link oder sonstiges einen Eintrag hat, ohne, dass der Titel angegeben wurde.
+//Filter-/Ansichtslogik für Tasks einrichten ==> abeschlossen, nahe Zukunft, Termin eingetragen, ggf. ohne Termin/weitere sinnvolle Zusätze
+
+
+// ############ ERLEDIGT ###############
 
 //Markieren des Task-Titels über den Titel hinaus auf den Task, soll nicht das Modal öffenen
 //wenn Datum im modal gelöscht wird, verschwindet es inklusive svg auf dem Task ==> beheben.
 //Bei Datum keine Buchstaben zulassen oder sogar kalender anzeigen lassen
 //Modalinhalt in allen Tasks gleich
 //Metadaten hinzufügen
-//Neue Tasks durch Nutzer hinzufügen
-//Wenn auf Link in Task geklickt, soll der Focus im Modal direkt auf den Link sein und kein weiterer Klick notwendig
-//Timer immer granularer, je näher Event kommt. Ggf. Zahl groß, Einheit darunter kleiner
-//Hinweis, wenn Location, Date, Link oder sonstiges einen Eintrag hat, ohne, dass der Titel angegeben wurde.
-
 
 
 //######### Beispielfunktion ###########
