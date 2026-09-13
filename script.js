@@ -157,30 +157,6 @@ function initialisiereTasks(task, index)
 }   
 tasks.forEach(initialisiereTasks);
 
-//MODAL-CHECKLIST-VISIT
-    //#####################
-
-function initialisiereChecklistVisit(checklistVisit, index)
-{
-    
-    const storageKeys = definiereStorageKeys(index);
-    const savedChecklistVisit = JSON.parse(localStorage.getItem(storageKeys.checkVisitStorageKey));
-
-    console.log("index:", index);
-    console.log("savedChecklistVisit:", savedChecklistVisit);
-
-   if (savedChecklistVisit !== null && savedChecklistVisit[index] !== undefined)  
-    
-    {                                                                       
-        checklistVisit.querySelector(".checklistVisitText").value = savedChecklistVisit[index].text;     
-    }                                                                       
-        else
-        {
-            checklistVisit.querySelector(".checklistVisitText").value = "";               
-        }                                                                
-}   
-checklistVisits.forEach(initialisiereChecklistVisit);
-
 //COUNTDOWN
 //######### 
 
@@ -342,6 +318,42 @@ function durchlaufeTasks(task, index)
             modalLink.value = "";
         }
         
+        //MODAL-CHECKLIST-VISIT
+        //#####################
+
+        
+        function initialisiereChecklistVisit(checklistVisit, iChecklist)
+        {
+            const storageKeys = definiereStorageKeys(currentIndex);                                                                     // Werte zum richtigen Task abrufen
+            const savedChecklistVisit = JSON.parse(localStorage.getItem(storageKeys.checkVisitStorageKey));
+
+        if (savedChecklistVisit !== null && savedChecklistVisit[iChecklist] !== null && savedChecklistVisit[iChecklist] !== undefined)  
+            {                                                                       
+                checklistVisit.querySelector(".checklistVisitText").value = savedChecklistVisit[iChecklist].text;                       //Speiche die zum Durchlauf passende gespeicherte Checklist in das Modal
+                checklistVisit.querySelector(".checkboxVisit").checked = savedChecklistVisit[iChecklist].checked;                       //checked links ist Eigenschaft wie value bei einem input-Element, checked rechts ist der Name des Objektes. Hier einmal als Text und einmal als Checked definiert
+
+                if (checklistVisit.querySelector(".checkboxVisit").checked === true)
+                {
+                    document.querySelector(".checkVisitDoneInner").append(checklistVisit);
+                }else
+                {
+                    document.querySelector(".checkVisit").append(checklistVisit);
+                }
+
+                steuereCheckVisitButton ();
+                checklistVisitArray[iChecklist] = savedChecklistVisit[iChecklist];   
+            }                                                                       
+                else
+                {
+                    checklistVisit.querySelector(".checklistVisitText").value = "";    
+                    checklistVisit.querySelector(".checkboxVisit").checked = false;           
+                }                                                                
+                
+            }   
+        checklistVisits.forEach(initialisiereChecklistVisit);
+
+        //MODAL OEFFNEN
+        //#############
 
         modal.classList.add("open");                                                                    
     };                                                                      
@@ -451,29 +463,27 @@ modalLink.addEventListener("input", speichereModalLinkAenderungen);
 
 //CHECKBOX VISIT
 
-function speichereModalCheckboxVisitAenderungen(checklistVisit, index)
+function speichereModalChecklistVisitAenderungen(checklistVisit, iChecklist)
 {
-    function checklistVisitTextEventInput(event)
+    function speichereChecklistVisit()
     {
-        checklistVisitArray[index] = 
+        //console.log("speichern");
+        //console.log(checklistVisit.querySelector(".checkboxVisit").checked);
+        checklistVisitArray[iChecklist] = 
         {
             checked: checklistVisit.querySelector(".checkboxVisit").checked,
             text: checklistVisit.querySelector(".checklistVisitText").value
         };
 
-        //console.log(index);
-        //console.log(checklistVisitArray);
-
-        const storageKeys = definiereStorageKeys(index);
-        //console.log(storageKeys.checkVisitStorageKey);
-
+        const storageKeys = definiereStorageKeys(currentIndex);
         localStorage.setItem(storageKeys.checkVisitStorageKey, JSON.stringify(checklistVisitArray));
-        //console.log(localStorage.getItem(storageKeys.checkVisitStorageKey));
-    }checklistVisit.querySelector(".checklistVisitText").addEventListener("input", checklistVisitTextEventInput);
-    
-    
-}checklistVisits.forEach(speichereModalCheckboxVisitAenderungen);
+        
 
+    }
+    checklistVisit.querySelector(".checklistVisitText").addEventListener("input", speichereChecklistVisit);
+    checklistVisit.querySelector(".checkboxVisit").addEventListener("change", speichereChecklistVisit);
+    
+}checklistVisits.forEach(speichereModalChecklistVisitAenderungen);
 
 //###############
 //MODAL SCHLIEßEN
@@ -544,66 +554,121 @@ hideVisitButtonTitle.innerHTML = "Erlebt";
 //CHECKLIST ITEM AUSBLENDEN
 //#########################
 
-const checkboxes = document.querySelectorAll(".checkboxVisit");
-
 if(AnzahlCheckboxVisitDone === 0)
 {
     document.querySelector("#hideVisitButton").classList.add("ausgeblendet");
 }
 
-function checklistItemAusblenden (checkboxVisit, index)
+const checkboxVisits = document.querySelectorAll(".checkboxVisit");
+
+function checklistItemAusblenden (checkboxVisit, iChecklist)
 {
     function pruefeCheckboxAktiv (event)
     {
         if(event.target.checked === true)
         {
             //console.log("checkbox aktiviert");
-            document.querySelector(".checkVisitDoneInner").append(event.target.closest(".checklistVisit"));
-            AnzahlCheckboxVisitDone = checkVisitDoneInner.querySelectorAll(".checkboxVisit").length;
-            document.querySelector("#hideVisitButton").classList.remove("ausgeblendet");
-            hideVisitButtonNumber.innerHTML = AnzahlCheckboxVisitDone;
-            //console.log(AnzahlCheckboxVisitDone);
 
-            if(checkVisitDoneContent.classList.contains("ausgeblendet") !== true)
+            let IndexPlus1 = iChecklist + 1;                                                                    //Element mit Index + 1 zum geänderten Element
+            let checklistVisitSortiert = 0;
+
+            while(IndexPlus1 < checkboxVisits.length)
             {
-                checkVisitDoneInner.classList.remove("ausgeblendet");
-                checkVisitDoneContent.style.maxHeight = checkVisitDoneContent.scrollHeight + "px";
-            }else 
+                if(checkboxVisits[IndexPlus1].checked === true)                                                 //Wenn der Nachfolger abgehakt, sortieren
+                {
+                    //#######Sortieren#########//
+
+                    document.querySelector(".checkVisitDoneInner").insertBefore(event.target.closest(".checklistVisit"), checkboxVisits[IndexPlus1].closest(".checklistVisit")); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
+                    checklistVisitSortiert = 1;
+                    break;                                                                                      //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
+                }
+                IndexPlus1 = IndexPlus1 + 1;
+            }   
+            if(checklistVisitSortiert === 0)                                                                    //Wenn kein Nachfoler mehr abgehakt, füge am Ende ein
             {
-                checkVisitDoneContent.style.maxHeight = "0px";
+                document.querySelector(".checkVisitDoneInner").append(event.target.closest(".checklistVisit"));
             }
+            checklistVisitSortiert = 0;
+                     
+            steuereCheckVisitButton ();
         }else
         {
             //console.log("checkbox deaktiviert");
             
-            if(checkVisitDoneContent.classList.contains("ausgeblendet") !== true)                                            //Wenn Fenster "Erledig" geöffnet
+            if(checkVisitDoneContent.classList.contains("ausgeblendet") !== true)                                //Wenn Fenster "Erledig" geöffnet
             {
                 checkVisitDoneContent.style.maxHeight = checkVisitDoneContent.scrollHeight + "px";
-                document.querySelector(".checkVisit").append(event.target.closest(".checklistVisit"));                  //Wenn Checkbox Haken entfernt, dann nimm nicht nur Checkbox, sondern komplettes Element mit Text und verschiebe es
-                AnzahlCheckboxVisitDone = checkVisitDoneInner.querySelectorAll(".checkboxVisit").length;
 
-                if(AnzahlCheckboxVisitDone === 0)
+                let IndexPlus1 = iChecklist + 1;                                                                //Element mit Index + 1 zum geänderten Element
+                let checklistVisitSortiert = 0;
+
+                while(IndexPlus1 < checkboxVisits.length)
                 {
-                    document.querySelector("#hideVisitButton").classList.add("ausgeblendet");                           //Button ausblenden 
-                    hideVisitButtonArrow.innerHTML = "&#709";
-                    checkVisitDoneContent.classList.add("ausgeblendet");
+                    if(checkboxVisits[IndexPlus1].checked === false)
+                    {
+                        //#######Sortieren#########//
 
-                    checkVisitDoneContent.style.height = "";
-                    checkVisitDoneContent.style.maxHeight = "";
+                        document.querySelector(".checkVisit").insertBefore(event.target.closest(".checklistVisit"), checkboxVisits[IndexPlus1].closest(".checklistVisit")); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
+                        checklistVisitSortiert = 1;
+                        break;                                                                                   //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
+                    }
+                    IndexPlus1 = IndexPlus1 + 1;
+                }   
+                if(checklistVisitSortiert === 0)
+                {
+                    document.querySelector(".checkVisit").append(event.target.closest(".checklistVisit"));       //Wenn Checkbox Haken entfernt, dann nimm nicht nur Checkbox, sondern komplettes Element mit Text und verschiebe es
                 }
-
-                hideVisitButtonNumber.innerHTML = AnzahlCheckboxVisitDone;
-                //console.log(AnzahlCheckboxVisitDone);
-
-                if(checkVisitDoneInner.querySelector(".checkboxVisit") === null)
-                {
-                    checkVisitDoneInner.classList.add("ausgeblendet");                     //Padding entfernen
-                    //console.log("Keine Checkbox in Hidden");
-                }            
+                checklistVisitSortiert = 0;             
+                
+                steuereCheckVisitButton ();
             }
         }
     }checkboxVisit.addEventListener("change", pruefeCheckboxAktiv);
-}checkboxes.forEach(checklistItemAusblenden);
+}checkboxVisits.forEach(checklistItemAusblenden);
+
+
+//CHECKLISTBUTTON
+//###############
+
+function steuereCheckVisitButton ()
+{
+    AnzahlCheckboxVisitDone = checkVisitDoneInner.querySelectorAll(".checkboxVisit").length;
+
+    if(checkVisitDoneInner.querySelectorAll(".checkboxVisit").length === 0)
+    {
+        document.querySelector("#hideVisitButton").classList.add("ausgeblendet");                       //Button ausblenden 
+        hideVisitButtonArrow.innerHTML = "&#709";
+        checkVisitDoneContent.classList.add("ausgeblendet");
+
+        checkVisitDoneContent.style.height = "";
+        checkVisitDoneContent.style.maxHeight = "";
+
+        hideVisitButtonNumber.innerHTML = AnzahlCheckboxVisitDone;
+        //console.log(AnzahlCheckboxVisitDone);
+
+        if(checkVisitDoneInner.querySelector(".checkboxVisit") === null)
+        {
+            checkVisitDoneInner.classList.add("ausgeblendet");                                          //Padding entfernen
+            //console.log("Keine Checkbox in Hidden");
+        }            
+    }else
+    {
+        AnzahlCheckboxVisitDone = checkVisitDoneInner.querySelectorAll(".checkboxVisit").length;
+        document.querySelector("#hideVisitButton").classList.remove("ausgeblendet");
+        hideVisitButtonNumber.innerHTML = AnzahlCheckboxVisitDone;
+        
+        //console.log(AnzahlCheckboxVisitDone);
+
+        if(checkVisitDoneContent.classList.contains("ausgeblendet") !== true)
+        {
+            checkVisitDoneInner.classList.remove("ausgeblendet");
+            checkVisitDoneContent.style.maxHeight = checkVisitDoneContent.scrollHeight + "px";
+        }else 
+        {
+            checkVisitDoneContent.style.maxHeight = "0px";
+        }
+    }
+}
 
 //AUSGEBLENDETER BEREICH AUF- UND ZUKLAPPEN
 //#########################################
@@ -649,16 +714,19 @@ function openCloseHideSection ()
 
 // ########## TO-DO ###########
 
-//Checkliste animiert auf und zuklappen. Aktuell mittels css Notlösung gemacht.
+
+//Nach Löschen von Task Titel ohne Reload wird kein Platzhalter gesetzt. Erst nach gesondertem Reload
 //Neue Tasks durch Nutzer hinzufügen
 //Wenn auf Link in Task geklickt, soll der Focus im Modal direkt auf den Link sein und kein weiterer Klick notwendig
 //Timer immer granularer, je näher Event kommt. Ggf. Zahl groß, Einheit darunter kleiner
 //Hinweis, wenn Location, Date, Link oder sonstiges einen Eintrag hat, ohne, dass der Titel angegeben wurde.
 //Filter-/Ansichtslogik für Tasks einrichten ==> abeschlossen, nahe Zukunft, Termin eingetragen, ggf. ohne Termin/weitere sinnvolle Zusätze
+//Reihenfolge beim Checken von Checklisten verändert sich je nach Reihenfolge des An- und Abhakens. Bei Reload Poition der Einträge wird wieder in die alte Reihenfolge gebracht
 
 
 // ############ ERLEDIGT ###############
 
+//Checkliste animiert auf und zuklappen. Aktuell mittels css Notlösung gemacht.
 //Markieren des Task-Titels über den Titel hinaus auf den Task, soll nicht das Modal öffenen
 //wenn Datum im modal gelöscht wird, verschwindet es inklusive svg auf dem Task ==> beheben.
 //Bei Datum keine Buchstaben zulassen oder sogar kalender anzeigen lassen
@@ -676,5 +744,11 @@ function Name (Udo)
 };
 
 Name (Hallo);
+
+
+
+
+
+//const iChecklist = Array.from(checkboxVisits).indexOf(checkboxVisit);
 
 */
