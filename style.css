@@ -532,21 +532,26 @@ p
     display: flex;
     flex-direction: column;
     position: relative;
-    width: min(90%, 700px);                         /* Nimm den kleineren Wert ==> 90 % auf Mobile, da nur 360 px darstellbar, auf normalem Monitor der mehr als 700 kann nimm 700 px. Bspw. 1400 zu viel. Responsive aber nicht riesig.*/
-    min-height: 300px;                              /* Später wächst Karte automatisch mit Inhalt */ 
+
+    width: min(92vw, 1050px);                         /* Nimm den kleineren Wert ==> 90 % auf Mobile, da nur 360 px darstellbar, auf normalem Monitor der mehr als 700 kann nimm 700 px. Bspw. 1400 zu viel. Responsive aber nicht riesig.*/
+    min-height: 620px;                              /* Später wächst Karte automatisch mit Inhalt */ 
+
     background: white;
     border-radius: 32px;
-    padding: 32px;
+    padding: 48px 56px;
+
     box-sizing: border-box;                         /* Padding zählt zur Gesamtbreite dazu. */
     margin: 0;
-    justify-content: center;
 }
 
 #modalTitle
 {   
-    font-size: 24px;
+    font-size: 34px;
+    font-weight: 700;
     margin: 0;
     padding: 0;
+
+    max-width: 650px;
 }
 
 #modalTitle:focus                                   
@@ -564,41 +569,129 @@ p
 .modalBody
 {
     display: flex;
-    padding-top: 32px;
-    gap: 48px;
+    flex-direction: column;
+
+    padding-top: 40px;
+    gap: 32px;
 }
 
 .modalInfo
 {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    gap: 12px;
+    width: 75%;
+}
+
+.infoRaw
+{
+    display: flex;
+    align-items: center;
+    min-width: 0;
+
+    height: 84px;
+    padding: 0 18px;
+
+    background-color: #f5f3f0;
+    border-radius: 18px;
+
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.ModalInfoText
+{
+    display: flex;
     flex-direction: column;
 
-    font-size: 22px;
-    color: #777;
-    gap: 16px;
+    flex: 1;
+    min-width: 0;
+}
+
+.ModalInfoText input
+{
+    width: 100%;
+    min-width: 0;
+}
+
+.infoRaw:nth-child(1)
+{
+    flex: 0.25;
+}
+
+.infoRaw:nth-child(2)
+{
+    flex: 0.32;
+}
+
+.infoRaw:nth-child(3)
+{
+    flex: 0.43;
+}
+
+.infoText
+{
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    flex: 1;
 }
 
 .modalInfo input
 {
-    font-size: inherit;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+
+    padding: 0;
+
+    font-size: 18px;
+    font-family: inherit;
+    color: #222;
+
     border: none;
-    border-radius: 16px;
     outline: none;
-    background-color: #f5f5f5;
-    padding-left: 16px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    background-color: transparent;
+
+    box-sizing:border-box;
+}
+
+.infoLabel
+{
+    margin-top: 4px;
+
+    font-size: 13px;
+    color: #888;
 }
 
 .icons
 {
-    width: 1em;
-    height: 1em;   
+    width: 24px;
+    height: 24px;   
+
+    flex-shrink: 0;
+
+    margin-right: 14px;
+
+    color: #555;
+}
+
+#modalDate
+{
+    overflow: visible;
+    text-overflow: clip;
+    cursor: pointer;
 }
 
 #modalDate::-webkit-calendar-picker-indicator
 {
     opacity:0;
+    width: 0;
+    margin: 0;
+    padding: 0;
 }
 
 #modalDate.dateHidden::-webkit-datetime-edit,
@@ -621,24 +714,39 @@ p
     background-color: transparent;
 }
 
+#modalLocation,
+#modalLink
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /*###########*/
 /*CHECKLISTEN*/
 /*###########*/
 
 .modalChecklist
 {
-    display: flex; 
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 40px;
+    width: 100%;
+
+    align-items: start;;     
 }
 
-.modalChecklist input
+.checkVisit,
+.checkToDo
 {
-    border: none;
-    border-radius: 8px;
-    outline: none;
-    background-color: #f5f5f5;
-    padding-left: 8px;  
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
 }
+
+
 
 .modalChecklist input[type="checkbox"]:checked + input[type="text"] /*Wenn die Checkbox angehakt ist, style das direkt danach kommende Textfeld*/
 {
@@ -649,122 +757,249 @@ p
 /*CHECK VISIT*/
 /*###########*/
 
-.checkVisit
+.checkVisitContent,
+.checkToDoContent
 {
     display: flex; 
     flex-direction: column;
-    margin-bottom: 8px;
-    gap: 3px;
+    margin-bottom: 6px;
+    gap: 6px;
 }
 
-.checkVisitTitle
+.checkVisitTitle,
+.checkToDoTitle
 {
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 650;
 }
 
-.checklistVisit
+.checklistVisit,
+.checklistToDo
 {
     display: flex;
     align-items:center;
+
+    min-height: 36px;
+
+    padding: 0 12px;
+
+    background-color: #f5f3f0;
+    border-radius: 10px;
+
+    box-sizing: border-box;
 }
 
-#hideVisitButton
+.checkboxVisit,
+.checkboxToDo
+{
+    flex-shrink: 0;
+
+    margin: 0;
+    margin-right: 10px;
+}
+
+.checklistVisitText,
+.checklistToDoText
+{
+    flex: 1;
+    min-width: 0;
+
+    font-size: 16px;
+    font-family: inherit;
+
+    border: none;
+    outline: none;
+    background-color: transparent;
+
+    padding: 0;
+}
+
+.loescheChecklistVisit,
+.loescheChecklistToDo
+{
+    padding-right: 4px;
+
+    font-size: 13px;
+    color: #797979;
+
+    cursor: pointer;
+}
+
+.loescheChecklistVisit:hover,
+.loescheChecklistToDo:hover
+{
+    padding-right: 4px;
+
+    font-size: 15px;
+    color: #5b5b5b;
+    width: 900;
+
+    cursor: pointer;
+}
+
+/*CHECKLISTENELEMENT HINZUFÜGEN*/
+/*#############################*/
+
+.checkVisitNewChecklistItem,
+.checkToDoNewChecklistItem
+{
+    display: flex;
+    align-items:center;
+
+    min-height: 36px;
+    padding: 0 12px;
+
+    margin-bottom: 16px;
+    gap: 10px;
+
+    /*background-color: #f5f3f0;*/
+    border-radius: 10px;
+    box-sizing: border-box;
+
+    cursor: pointer;
+}
+
+.checkVisitNewChecklistItemButton,
+.checkToDoNewChecklistItemButton
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 18px;
+    height: 18px;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+    background-color: transparent;
+
+    font-family: inherit;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
+
+    appearance: none;
+
+    color: #797979;
+
+    /*border-radius: 50%;*/
+
+    cursor: pointer;
+
+    transform: translateY(-2px);
+}
+
+
+.checkVisitNewChecklistItemText,
+.checkToDoNewChecklistItemText
+{
+    display: flex;
+    align-items: center;
+
+    font-size: 16px;
+    font-weight: 400;
+    color: #888;
+
+    cursor: pointer;
+}
+
+/*HIDE BEREICH*/
+/*############*/
+
+#hideVisitButton,
+#hideToDoButton
 {
     display: flex;
     justify-content: space-between;
-    
-    font-family: inherit;                                           /*Browserstyling bei button lässt sich nicht einfach überschreiben. Inherit hebt es auf und sagt, beziehe Syling vom Elternelement. Alles was explizit gesetzt wird, wir dann wieder überschrieben*/
-    margin-bottom: 4px;
-    max-height: 16px;
+    align-items: center;
+
+    width: 100%;
+    min-height: 28px;
+
+    padding: 0 6px;
+    margin: 4px 0 6px 0;
 
     border: none;
     background-color: transparent; 
     
-    font-size: 11px;
-    font-weight: 450;
+    font-family: inherit;                                           /*Browserstyling bei button lässt sich nicht einfach überschreiben. Inherit hebt es auf und sagt, beziehe Syling vom Elternelement. Alles was explizit gesetzt wird, wir dann wieder überschrieben*/
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
 }
 
-#hideVisitButton.ausgeblendet
+#hideVisitButton.ausgeblendet,
+#hideToDoButton.ausgeblendet
 {
     display: none;
 }
 
-#hideVisitButtonLeft
+#hideVisitButtonLeft,
+#hideToDoButtonLeft
 {
     display: flex;
+    align-items: center;
     gap: 8px;
-
-    font-family: inherit; 
 }
 
-#hideVisitButtonRight
+#hideVisitButtonRight,
+#hideToDoButtonRight
 {
-    font-family: inherit;                                              /*übernehme Styling von Elternelement #hideVisitButton*/                                                                                           
+    font-size: 12px;                                        
+    color: #666;                                                                                          
 }
 
-.checkVisitDoneContent
+.checkVisitDoneContent/*,
+.checkToDoDoneContent*/
 {
-    padding-right: 4px; 
+    overflow: hidden; 
 
     border: none;
-    border-radius: 8px;
     outline: none;
-
-    background: linear-gradient(90deg, #ebdfdb 0.000%, #ebdfdb 16.667%, #ebdfdb 33.333%, #ebdfdb 50.000%, #ebdfdb 66.667%, #ebdfdb 83.333%, #ebdfdb 100.000%);
-
-    overflow: hidden;
-
+    border-radius: 12px;
     
-    
+    background-color: #ece8e3;
+
+    /*background: linear-gradient(90deg, #ebdfdb 0.000%, #ebdfdb 16.667%, #ebdfdb 33.333%, #ebdfdb 50.000%, #ebdfdb 66.667%, #ebdfdb 83.333%, #ebdfdb 100.000%);   */
 }
 
 .checkVisitDoneContent.aktiviereTransitionHidden
+.checkToDoDoneContent.aktiviereTransitionHidden
 {
     transition: max-height 0.4s ease;
 }
 
-.checkVisitDoneContent.ausgeblendet
+.checkVisitDoneContent.ausgeblendet,
+.checkToDoDoneContent.ausgeblendet
 {
     max-height: 0;
     padding: 0;
     border: none;
 }
 
-.checkVisitDoneInner
+.checkVisitDoneInner,
+.checkToDoDoneInner
 {
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    padding-bottom: 4px;  
-    padding-top: 4px;  
+
+    gap: 6px;
+    padding: 8px; 
 }
 
-.checkVisitDoneInner.ausgeblendet
+.checkVisitDoneInner.ausgeblendet,
+.checkToDoDoneInner.ausgeblendet
 {
     display: flex;
     flex-direction: column;
     gap: 0px;
     padding-bottom: 0px;  
     padding-top: 0px;  
-}
-
-/*CHECK TO DO*/
-/*###########*/
-
-.checkToDo
-{
-    margin-top: 16px;
-}
-
-.checkToDoTitle
-{
-    margin-bottom: 10px;
-
-    font-size: 12px;
-    font-weight: 500;
 }
 
 /*################*/
@@ -779,10 +1014,30 @@ p
 .modal-close                                        /* Styling des "X"-Buttons*/
 {
     position: absolute;                             /* absolute positioniert sich relativ zum nächsten relativ zum nächsten relativ Elternteil. Hier modal-content*/
-    top: 24px;
-    right:24px;
-    border-radius: 5px;
-    margin: 0px;                                    /*!!!!!!!!!!!!!!!!!!!!!Unten ist Platz, der weg muss */
+    
+    top: 22px;
+    right:22px;
+
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: #f5f3f0;
+
+    font-size: 25px;
+    font-family: inherit;
+    line-height: 1;
+
+    cursor: pointer;
 }
 
 /*#######################*/

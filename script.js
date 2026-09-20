@@ -42,6 +42,8 @@ const modalDate = document.querySelector("#modalDate");
 const modalLocation = document.querySelector("#modalLocation");
 const modalClose = document.querySelector("#modalClose");
 
+const checkVisitContent = document.querySelector(".checkVisitContent");
+const checkVisitNewChecklistItem = document.querySelector(".checkVisitNewChecklistItem");
 const checkVisitDoneContent = document.querySelector(".checkVisitDoneContent");
 const checkVisitDoneInner = document.querySelector(".checkVisitDoneInner");
 let AnzahlCheckboxVisitDone = checkVisitDoneInner.querySelectorAll(".checkboxVisit").length;
@@ -337,7 +339,7 @@ function durchlaufeTasks(task, index)
                     document.querySelector(".checkVisitDoneInner").append(checklistVisit);
                 }else
                 {
-                    document.querySelector(".checkVisit").append(checklistVisit);
+                    document.querySelector(".checkVisitContent").append(checklistVisit);
                 }
 
                 steuereCheckVisitButton ();
@@ -608,7 +610,7 @@ function checklistItemAusblenden (checkboxVisit, iChecklist)
                     {
                         //#######Sortieren#########//
 
-                        document.querySelector(".checkVisit").insertBefore(event.target.closest(".checklistVisit"), checkboxVisits[IndexPlus1].closest(".checklistVisit")); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
+                        document.querySelector(".checkVisitContent").insertBefore(event.target.closest(".checklistVisit"), checkboxVisits[IndexPlus1].closest(".checklistVisit")); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
                         checklistVisitSortiert = 1;
                         break;                                                                                   //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
                     }
@@ -616,7 +618,7 @@ function checklistItemAusblenden (checkboxVisit, iChecklist)
                 }   
                 if(checklistVisitSortiert === 0)
                 {
-                    document.querySelector(".checkVisit").append(event.target.closest(".checklistVisit"));       //Wenn Checkbox Haken entfernt, dann nimm nicht nur Checkbox, sondern komplettes Element mit Text und verschiebe es
+                    document.querySelector(".checkVisitContent").append(event.target.closest(".checklistVisit"));       //Wenn Checkbox Haken entfernt, dann nimm nicht nur Checkbox, sondern komplettes Element mit Text und verschiebe es
                 }
                 checklistVisitSortiert = 0;             
                 
@@ -626,6 +628,29 @@ function checklistItemAusblenden (checkboxVisit, iChecklist)
     }checkboxVisit.addEventListener("change", pruefeCheckboxAktiv);
 }checkboxVisits.forEach(checklistItemAusblenden);
 
+//CHECKLISTE HINZUFUEGEN
+//######################
+
+function neuesChecklistVisitElement ()
+{
+    const neuesChecklistVisitElement = document.createElement("div");
+    neuesChecklistVisitElement.classList.add("checklistVisit");
+
+    const neueCheckboxVisit = document.createElement("input");
+    neueCheckboxVisit.type = "checkbox";
+    neueCheckboxVisit.classList.add("checkboxVisit");
+
+    neuesChecklistVisitElement.append(neueCheckboxVisit);
+
+    const neuerChecklistVisitText = document.createElement("input");
+    neuerChecklistVisitText.type = "text";
+    neuerChecklistVisitText.classList.add("checklistVisitText");
+
+    neuesChecklistVisitElement.append(neuerChecklistVisitText);
+
+    checkVisitContent.append(neuesChecklistVisitElement);
+    
+}checkVisitNewChecklistItem.addEventListener("click", neuesChecklistVisitElement);
 
 //CHECKLISTBUTTON
 //###############
