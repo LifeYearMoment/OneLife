@@ -803,16 +803,17 @@ function openCloseHideSection ()
 
 
 //Nach Löschen von Task Titel ohne Reload wird kein Platzhalter gesetzt. Erst nach gesondertem Reload
-//Neue Tasks durch Nutzer hinzufügen
 //Wenn auf Link in Task geklickt, soll der Focus im Modal direkt auf den Link sein und kein weiterer Klick notwendig
 //Timer immer granularer, je näher Event kommt. Ggf. Zahl groß, Einheit darunter kleiner
 //Hinweis, wenn Location, Date, Link oder sonstiges einen Eintrag hat, ohne, dass der Titel angegeben wurde.
 //Filter-/Ansichtslogik für Tasks einrichten ==> abeschlossen, nahe Zukunft, Termin eingetragen, ggf. ohne Termin/weitere sinnvolle Zusätze
-//Reihenfolge beim Checken von Checklisten verändert sich je nach Reihenfolge des An- und Abhakens. Bei Reload Poition der Einträge wird wieder in die alte Reihenfolge gebracht
+
 
 
 // ############ ERLEDIGT ###############
 
+//Reihenfolge beim Checken von Checklisten verändert sich je nach Reihenfolge des An- und Abhakens. Bei Reload Poition der Einträge wird wieder in die alte Reihenfolge gebracht
+//Neue Tasks durch Nutzer hinzufügen
 //Checkliste animiert auf und zuklappen. Aktuell mittels css Notlösung gemacht.
 //Markieren des Task-Titels über den Titel hinaus auf den Task, soll nicht das Modal öffenen
 //wenn Datum im modal gelöscht wird, verschwindet es inklusive svg auf dem Task ==> beheben.
