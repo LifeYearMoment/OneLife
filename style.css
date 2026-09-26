@@ -746,8 +746,6 @@ p
     min-width: 0;
 }
 
-
-
 .modalChecklist input[type="checkbox"]:checked + input[type="text"] /*Wenn die Checkbox angehakt ist, style das direkt danach kommende Textfeld*/
 {
     text-decoration: line-through;
@@ -756,6 +754,13 @@ p
 
 /*CHECK VISIT*/
 /*###########*/
+
+.checkVisitScrollArea/*,
+checkVisitToDoScrollArea*/
+{
+    max-height: 350px;
+    overflow-y: auto;
+}
 
 .checkVisitContent,
 .checkToDoContent
@@ -798,6 +803,8 @@ p
 
     margin: 0;
     margin-right: 10px;
+
+    accent-color: #cec5bf;
 }
 
 .checklistVisitText,
@@ -965,7 +972,7 @@ p
     
     background-color: #ece8e3;
 
-    /*background: linear-gradient(90deg, #ebdfdb 0.000%, #ebdfdb 16.667%, #ebdfdb 33.333%, #ebdfdb 50.000%, #ebdfdb 66.667%, #ebdfdb 83.333%, #ebdfdb 100.000%);   */
+    /*background: linear-gradient(90deg, #ebdfdb 0.000%, #ebdfdb 16.667%, #ebdfdb 33.333%, #ebdfdb 50.000%, #ebdfdb 66.667%, #ebdfdb 83.333%, #ebdfdb 100.000%); */  
 }
 
 .checkVisitDoneContent.aktiviereTransitionHidden

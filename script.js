@@ -43,12 +43,14 @@ const modalLocation = document.querySelector("#modalLocation");
 const modalClose = document.querySelector("#modalClose");
 
 const checkVisitContent = document.querySelector(".checkVisitContent");
+const checkToDoContent = document.querySelector(".checkToDoContent");
 const checkVisitNewChecklistItem = document.querySelector(".checkVisitNewChecklistItem");
+const checkToDoNewChecklistItem = document.querySelector(".checkToDoNewChecklistItem");
 const checkVisitDoneContent = document.querySelector(".checkVisitDoneContent");
 const checkVisitDoneInner = document.querySelector(".checkVisitDoneInner");
 let AnzahlCheckboxVisitDone = checkVisitDoneInner.querySelectorAll(".checkboxVisit").length;
 const hideVisitButton = document.querySelector("#hideVisitButton");
-const checklistVisits = document.querySelectorAll(".checklistVisit");
+let checklistVisits = document.querySelectorAll(".checklistVisit");
 
 const checklistVisitArray = [];
 
@@ -556,77 +558,98 @@ hideVisitButtonTitle.innerHTML = "Erlebt";
 //CHECKLIST ITEM AUSBLENDEN
 //#########################
 
-if(AnzahlCheckboxVisitDone === 0)
-{
-    document.querySelector("#hideVisitButton").classList.add("ausgeblendet");
-}
-
 const checkboxVisits = document.querySelectorAll(".checkboxVisit");
 
-function checklistItemAusblenden (checkboxVisit, iChecklist)
-{
-    function pruefeCheckboxAktiv (event)
-    {
-        if(event.target.checked === true)
-        {
-            //console.log("checkbox aktiviert");
 
-            let IndexPlus1 = iChecklist + 1;                                                                    //Element mit Index + 1 zum geänderten Element
+if(AnzahlCheckboxVisitDone === 0)
+{
+    document.querySelector("#hideVisitButton").classList.add("ausgeblendet");                   //Done-Bereich ausblenden, wenn kein Element abgehakt ist
+}
+
+function vergebeChecklistVisitReihenfolge(checklistVisit, index)
+{
+    checklistVisit.dataset.order = index;
+}checklistVisits.forEach(vergebeChecklistVisitReihenfolge);
+
+function aktiviereCheckboxVisit(checkboxVisit)
+{
+    checkboxVisit.addEventListener("change", pruefeCheckboxAktiv);
+}checkboxVisits.forEach(aktiviereCheckboxVisit);
+
+function pruefeCheckboxAktiv (event)
+{
+    const aktuellesChecklistVisit = event.target.closest(".checklistVisit");                    //Checklist, dessen Checkbox angeklickt wurde
+    const aktuelleReihenfolge = Number(aktuellesChecklistVisit.dataset.order);                  //Reihenfolgennummer
+                                                                                                //Number macht aus Wert/string, den Dataset liefert eine Zahl
+    const aktuelleCheckboxVisits = document.querySelectorAll(".checkboxVisit");                 //Alle Checklistenelemente, um Anzahl zu bestimmen
+
+    console.log(aktuellesChecklistVisit);
+    console.log(aktuelleReihenfolge);
+
+    if(event.target.checked === true)                                                            //Wenn das Element abgehakt wurde, dann...
+    {
+        console.log("checkbox aktiviert");
+
+        let IndexPlus1 = aktuelleReihenfolge + 1;                                                //Element mit Index + 1 zum geänderten Element
+        let checklistVisitSortiert = 0;
+
+        while(IndexPlus1 < aktuelleCheckboxVisits.length)
+        {
+            let ChecklistVisitNachfolger = document.querySelector(".checklistVisit[data-order='"+ IndexPlus1 +"']");
+
+            if(ChecklistVisitNachfolger !== null && ChecklistVisitNachfolger.querySelector(".checkboxVisit").checked === true) //aktuelleCheckboxVisits[IndexPlus1].checked             //Wenn der Nachfolger abgehakt, sortieren
+            {
+                //#######Sortieren#########//
+
+                document.querySelector(".checkVisitDoneInner").insertBefore(aktuellesChecklistVisit, ChecklistVisitNachfolger ); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
+                checklistVisitSortiert = 1;                                                             //aktuelleCheckboxVisits[IndexPlus1].closest(".checklistVisit")
+                break;                                                                                      //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
+            }
+            IndexPlus1 = IndexPlus1 + 1;
+        }   
+        if(checklistVisitSortiert === 0)                                                                    //Wenn kein Nachfoler mehr abgehakt, füge am Ende ein
+        {
+            document.querySelector(".checkVisitDoneInner").append(aktuellesChecklistVisit);
+        }
+        checklistVisitSortiert = 0;
+                    
+        steuereCheckVisitButton ();
+    }else
+    {
+        //console.log("checkbox deaktiviert");
+        
+        if(checkVisitDoneContent.classList.contains("ausgeblendet") !== true)                        //Wenn Fenster "Erledig" geöffnet
+        {
+            checkVisitDoneContent.style.maxHeight = checkVisitDoneContent.scrollHeight + "px";
+
+            let IndexPlus1 = aktuelleReihenfolge + 1;                                                //Element mit Index + 1 zum geänderten Element
             let checklistVisitSortiert = 0;
 
-            while(IndexPlus1 < checkboxVisits.length)
+            while(IndexPlus1 < aktuelleCheckboxVisits.length)
             {
-                if(checkboxVisits[IndexPlus1].checked === true)                                                 //Wenn der Nachfolger abgehakt, sortieren
+                let ChecklistVisitNachfolger = document.querySelector(".checklistVisit[data-order='"+ IndexPlus1 +"']");
+
+                if(ChecklistVisitNachfolger !== null && ChecklistVisitNachfolger.querySelector(".checkboxVisit").checked === false)
                 {
                     //#######Sortieren#########//
 
-                    document.querySelector(".checkVisitDoneInner").insertBefore(event.target.closest(".checklistVisit"), checkboxVisits[IndexPlus1].closest(".checklistVisit")); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
+                    document.querySelector(".checkVisitContent").insertBefore(aktuellesChecklistVisit, ChecklistVisitNachfolger); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
                     checklistVisitSortiert = 1;
-                    break;                                                                                      //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
+                    break;                                                                          //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
                 }
                 IndexPlus1 = IndexPlus1 + 1;
             }   
-            if(checklistVisitSortiert === 0)                                                                    //Wenn kein Nachfoler mehr abgehakt, füge am Ende ein
+            if(checklistVisitSortiert === 0)
             {
-                document.querySelector(".checkVisitDoneInner").append(event.target.closest(".checklistVisit"));
+                document.querySelector(".checkVisitContent").append(aktuellesChecklistVisit);       //Wenn Checkbox Haken entfernt, dann nimm nicht nur Checkbox, sondern komplettes Element mit Text und verschiebe es
             }
-            checklistVisitSortiert = 0;
-                     
-            steuereCheckVisitButton ();
-        }else
-        {
-            //console.log("checkbox deaktiviert");
+            checklistVisitSortiert = 0;             
             
-            if(checkVisitDoneContent.classList.contains("ausgeblendet") !== true)                                //Wenn Fenster "Erledig" geöffnet
-            {
-                checkVisitDoneContent.style.maxHeight = checkVisitDoneContent.scrollHeight + "px";
-
-                let IndexPlus1 = iChecklist + 1;                                                                //Element mit Index + 1 zum geänderten Element
-                let checklistVisitSortiert = 0;
-
-                while(IndexPlus1 < checkboxVisits.length)
-                {
-                    if(checkboxVisits[IndexPlus1].checked === false)
-                    {
-                        //#######Sortieren#########//
-
-                        document.querySelector(".checkVisitContent").insertBefore(event.target.closest(".checklistVisit"), checkboxVisits[IndexPlus1].closest(".checklistVisit")); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
-                        checklistVisitSortiert = 1;
-                        break;                                                                                   //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
-                    }
-                    IndexPlus1 = IndexPlus1 + 1;
-                }   
-                if(checklistVisitSortiert === 0)
-                {
-                    document.querySelector(".checkVisitContent").append(event.target.closest(".checklistVisit"));       //Wenn Checkbox Haken entfernt, dann nimm nicht nur Checkbox, sondern komplettes Element mit Text und verschiebe es
-                }
-                checklistVisitSortiert = 0;             
-                
-                steuereCheckVisitButton ();
-            }
+            steuereCheckVisitButton ();
         }
-    }checkboxVisit.addEventListener("change", pruefeCheckboxAktiv);
-}checkboxVisits.forEach(checklistItemAusblenden);
+    }
+}
+
 
 //CHECKLISTE HINZUFUEGEN
 //######################
@@ -636,9 +659,12 @@ function neuesChecklistVisitElement ()
     const neuesChecklistVisitElement = document.createElement("div");
     neuesChecklistVisitElement.classList.add("checklistVisit");
 
+    neuesChecklistVisitElement.dataset.order = document.querySelectorAll(".checklistVisit").length;
+
     const neueCheckboxVisit = document.createElement("input");
     neueCheckboxVisit.type = "checkbox";
     neueCheckboxVisit.classList.add("checkboxVisit");
+    neueCheckboxVisit.addEventListener("change", pruefeCheckboxAktiv);
 
     neuesChecklistVisitElement.append(neueCheckboxVisit);
 
@@ -648,9 +674,45 @@ function neuesChecklistVisitElement ()
 
     neuesChecklistVisitElement.append(neuerChecklistVisitText);
 
+    const neuesLoescheChecklistVisit = document.createElement("div");
+    neuesLoescheChecklistVisit.classList.add("loescheChecklistVisit");
+    neuesLoescheChecklistVisit.textContent = "x";
+
+    neuesChecklistVisitElement.append(neuesLoescheChecklistVisit);
+
     checkVisitContent.append(neuesChecklistVisitElement);
     
 }checkVisitNewChecklistItem.addEventListener("click", neuesChecklistVisitElement);
+
+function neuesChecklistToDoElement ()
+{
+    const neuesChecklistToDoElement = document.createElement("div");
+    neuesChecklistToDoElement.classList.add("checklistToDo");
+
+    neuesChecklistToDoElement.dataset.order = document.querySelectorAll(".checklistToDo").length;
+
+    const neueCheckboxToDo = document.createElement("input");
+    neueCheckboxToDo.type = "checkbox";
+    neueCheckboxToDo.classList.add("checkboxToDo");
+    neueCheckboxToDo.addEventListener("change", pruefeCheckboxAktiv);
+
+    neuesChecklistToDoElement.append(neueCheckboxToDo);
+
+    const neuerChecklistToDoText = document.createElement("input");
+    neuerChecklistToDoText.type = "text";
+    neuerChecklistToDoText.classList.add("checklistToDoText");
+
+    neuesChecklistToDoElement.append(neuerChecklistToDoText);
+
+    const neuesLoescheChecklistToDo = document.createElement("div");
+    neuesLoescheChecklistToDo.classList.add("loescheChecklistToDo");
+    neuesLoescheChecklistToDo.textContent = "x";
+
+    neuesChecklistToDoElement.append(neuesLoescheChecklistToDo);
+
+    checkToDoContent.append(neuesChecklistToDoElement);
+    
+}checkToDoNewChecklistItem.addEventListener("click", neuesChecklistToDoElement);
 
 //CHECKLISTBUTTON
 //###############
