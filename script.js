@@ -50,7 +50,8 @@ const checkVisitDoneContent = document.querySelector(".checkVisitDoneContent");
 const checkVisitDoneInner = document.querySelector(".checkVisitDoneInner");
 let AnzahlCheckboxVisitDone = checkVisitDoneInner.querySelectorAll(".checkboxVisit").length;
 const hideVisitButton = document.querySelector("#hideVisitButton");
-let checklistVisits = document.querySelectorAll(".checklistVisit");
+const checklistVisits = document.querySelectorAll(".checklistVisit");
+const checklistToDos = document.querySelectorAll(".checklistToDo");
 
 const checklistVisitArray = [];
 
@@ -560,7 +561,6 @@ hideVisitButtonTitle.innerHTML = "Erlebt";
 
 const checkboxVisits = document.querySelectorAll(".checkboxVisit");
 
-
 if(AnzahlCheckboxVisitDone === 0)
 {
     document.querySelector("#hideVisitButton").classList.add("ausgeblendet");                   //Done-Bereich ausblenden, wenn kein Element abgehakt ist
@@ -570,6 +570,11 @@ function vergebeChecklistVisitReihenfolge(checklistVisit, index)
 {
     checklistVisit.dataset.order = index;
 }checklistVisits.forEach(vergebeChecklistVisitReihenfolge);
+
+function vergebeChecklistToDoReihenfolge(checklistToDo, index)
+{
+    checklistToDo.dataset.order = index;
+}checklistToDos.forEach(vergebeChecklistToDoReihenfolge);
 
 function aktiviereCheckboxVisit(checkboxVisit)
 {
@@ -676,6 +681,7 @@ function neuesChecklistVisitElement ()
 
     const neuesLoescheChecklistVisit = document.createElement("div");
     neuesLoescheChecklistVisit.classList.add("loescheChecklistVisit");
+    neuesLoescheChecklistVisit.classList.add("loescheChecklist");
     neuesLoescheChecklistVisit.textContent = "x";
 
     neuesChecklistVisitElement.append(neuesLoescheChecklistVisit);
@@ -706,13 +712,129 @@ function neuesChecklistToDoElement ()
 
     const neuesLoescheChecklistToDo = document.createElement("div");
     neuesLoescheChecklistToDo.classList.add("loescheChecklistToDo");
+    neuesLoescheChecklistToDo.classList.add("loescheChecklist");
     neuesLoescheChecklistToDo.textContent = "x";
 
     neuesChecklistToDoElement.append(neuesLoescheChecklistToDo);
 
-    checkToDoContent.append(neuesChecklistToDoElement);
+    checkToDoContent.append(neuesChecklistToDoElement);  //Eltern-Element.append(Kind-Element); Füge Kind an letzte Stelle des Eltern-Elements
     
 }checkToDoNewChecklistItem.addEventListener("click", neuesChecklistToDoElement);
+
+//CHECKLISTE VERSCHIEBEN
+//######################
+
+const dragHandles = document.querySelectorAll(".dragHandle");
+let newChecklistVisitShadow = null; 
+let startdragVisit = null;
+
+function aktiviereDragHandle (dragHandle)
+{
+    dragHandle.addEventListener("dragstart", starteDrag);
+
+    function removeChecklistVisitShadow ()
+    {
+        newChecklistVisitShadow.remove();
+    }dragHandle.addEventListener("dragend", removeChecklistVisitShadow);
+
+}dragHandles.forEach(aktiviereDragHandle);
+
+function starteDrag(event)
+{
+    startdragVisit = event.target.closest(".checklistVisit");
+
+    newChecklistVisitShadow = document.createElement("div");              //Schattenelement als Platzhalter erzeugen
+    newChecklistVisitShadow.classList.add("checklistVisitshadow");
+}
+
+function dragOver(event)
+{
+    const dragOver = event.target.closest(".checklistVisit");
+    let dragOverYPosition = event.clientY;
+
+    if(startdragVisit === dragOver)
+    {
+        return;   
+    }else
+    {
+        if(dragOver !== null)
+        {
+            let dragOvermiddle = dragOver.getBoundingClientRect().top+(dragOver.getBoundingClientRect().height/2); // Koordinatensystem Y = 0 oben
+            
+            if(dragOverYPosition < dragOvermiddle)
+            {
+                //console.log(dragOver.dataset.order);
+                checkVisitContent.insertBefore(newChecklistVisitShadow, dragOver);
+            }else
+            {
+                //console.log("darunter Einfügen");
+                checkVisitContent.insertBefore(newChecklistVisitShadow, dragOver.nextElementSibling); //nextElementSibling = das nächste Element auf der selben DOM-Ebene
+            }
+        }
+    }   
+
+   
+    //console.log(dragOver.getBoundingClientRect());
+    //console.log(event.clientY);
+}checkVisitContent.addEventListener("dragover", dragOver);
+
+
+
+//CHECKLISTE LOESCHEN
+//###################
+
+const modalChecklist = document.querySelector(".modalChecklist");
+
+function loescheChecklist(event)
+{
+    //console.log(event.target.closest(".loescheChecklistVisit"));
+    //console.log(Number(event.target.closest(".checklistVisit").dataset.order));
+    //console.log(Number(event.target.closest(".checklistToDo").dataset.order));
+    if((event.target.closest(".loescheChecklistVisit") || event.target.closest(".loescheChecklistToDo"))  === null)
+    {
+        console.log("keinLoeschvorgang");
+        return;
+    }else
+    {
+        console.log("loesche Checklist");
+        if(event.target.closest(".checklistVisit"))
+        {
+            const dataOrderAktuelleChecklistVisit = Number(event.target.closest(".checklistVisit").dataset.order);
+            event.target.closest(".checklistVisit").remove();
+
+            const checklistVisits = document.querySelectorAll(".checklistVisit");
+
+            function dataOrderVisitNeuErstellen(checklistVisit)
+            {
+                if(dataOrderAktuelleChecklistVisit < Number(checklistVisit.dataset.order))
+                {
+                    checklistVisit.dataset.order = Number(checklistVisit.dataset.order) - 1;
+                }
+            }checklistVisits.forEach(dataOrderVisitNeuErstellen);
+        }
+
+        else if (event.target.closest(".checklistToDo"))
+        {
+            const dataOrderAktuelleChecklistToDo = Number(event.target.closest(".checklistToDo").dataset.order);
+            event.target.closest(".checklistToDo").remove();
+
+            const checklistToDos = document.querySelectorAll(".checklistToDo");
+
+            function dataOrderToDoNeuErstellen(checklistToDo)
+            {
+                if(dataOrderAktuelleChecklistToDo < Number(checklistToDo.dataset.order))
+                {
+                    checklistToDo.dataset.order = Number(checklistToDo.dataset.order) - 1;
+                }
+            }checklistToDos.forEach(dataOrderToDoNeuErstellen);
+        }
+
+        //console.log(dataOrderAktuelleChecklist);
+    }
+
+    
+
+}modalChecklist.addEventListener("click", loescheChecklist);
 
 //CHECKLISTBUTTON
 //###############

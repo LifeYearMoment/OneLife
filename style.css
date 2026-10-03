@@ -846,6 +846,22 @@ checkVisitToDoScrollArea*/
     cursor: pointer;
 }
 
+.checklistVisitshadow/*,
+.checklistToDoshadow*/
+{
+    display: flex;
+    align-items:center;
+
+    min-height: 36px;
+
+    padding: 0 12px;
+
+    background-color: #e3ded7;
+    border-radius: 10px;
+
+    box-sizing: border-box;
+}
+
 /*CHECKLISTENELEMENT HINZUFÜGEN*/
 /*#############################*/
 
