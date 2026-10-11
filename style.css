@@ -796,6 +796,28 @@ checkVisitToDoScrollArea*/
     box-sizing: border-box;
 }
 
+.checklistVisitDragAktiv                /*Element, das gezogen wird, wird wähend Drag nach links aus dem sichtbaren Bereich gebracht*/
+{
+    position: fixed;
+    left: -10000px;
+}
+
+.dragPreview
+{
+    position: fixed;
+    z-index: 10000px;
+    pointer-events: none;
+
+    opacity: 1;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    border-radius: 8px;   
+}
+
+.dragHandle
+{
+    margin-right: 8px;
+}
+
 .checkboxVisit,
 .checkboxToDo
 {
@@ -846,7 +868,7 @@ checkVisitToDoScrollArea*/
     cursor: pointer;
 }
 
-.checklistVisitshadow/*,
+.checklistVisitShadow/*,
 .checklistToDoshadow*/
 {
     display: flex;

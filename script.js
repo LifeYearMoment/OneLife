@@ -516,7 +516,7 @@ modal.addEventListener("click", (event) =>
 
 document.addEventListener("keydown", (event) =>
 {
-    console.log(event.key);
+    //console.log(event.key);
     if(event.key == "Escape" && modal.classList.contains("open"))
     {
         modal.classList.remove("open");
@@ -534,7 +534,7 @@ function oeffneDatePicker()
         modalDate.showPicker();
     }
 }modalDate.addEventListener("click", oeffneDatePicker);
-console.log(modalDate.value);
+//console.log(modalDate.value);
 
 function placeholderModalDateHidden()
 {
@@ -588,12 +588,12 @@ function pruefeCheckboxAktiv (event)
                                                                                                 //Number macht aus Wert/string, den Dataset liefert eine Zahl
     const aktuelleCheckboxVisits = document.querySelectorAll(".checkboxVisit");                 //Alle Checklistenelemente, um Anzahl zu bestimmen
 
-    console.log(aktuellesChecklistVisit);
-    console.log(aktuelleReihenfolge);
+    //console.log(aktuellesChecklistVisit);
+    //console.log(aktuelleReihenfolge);
 
     if(event.target.checked === true)                                                            //Wenn das Element abgehakt wurde, dann...
     {
-        console.log("checkbox aktiviert");
+        //console.log("checkbox aktiviert");
 
         let IndexPlus1 = aktuelleReihenfolge + 1;                                                //Element mit Index + 1 zum geänderten Element
         let checklistVisitSortiert = 0;
@@ -607,12 +607,12 @@ function pruefeCheckboxAktiv (event)
                 //#######Sortieren#########//
 
                 document.querySelector(".checkVisitDoneInner").insertBefore(aktuellesChecklistVisit, ChecklistVisitNachfolger ); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
-                checklistVisitSortiert = 1;                                                             //aktuelleCheckboxVisits[IndexPlus1].closest(".checklistVisit")
-                break;                                                                                      //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
+                checklistVisitSortiert = 1;                                                          //aktuelleCheckboxVisits[IndexPlus1].closest(".checklistVisit")
+                break;                                                                               //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
             }
             IndexPlus1 = IndexPlus1 + 1;
         }   
-        if(checklistVisitSortiert === 0)                                                                    //Wenn kein Nachfoler mehr abgehakt, füge am Ende ein
+        if(checklistVisitSortiert === 0)                                                             //Wenn kein Nachfoler mehr abgehakt, füge am Ende ein
         {
             document.querySelector(".checkVisitDoneInner").append(aktuellesChecklistVisit);
         }
@@ -666,6 +666,14 @@ function neuesChecklistVisitElement ()
 
     neuesChecklistVisitElement.dataset.order = document.querySelectorAll(".checklistVisit").length;
 
+    const neuesDragHandle = document.createElement("div");
+    neuesDragHandle.classList.add("dragHandle");
+    neuesDragHandle.draggable = true;
+    neuesDragHandle.textContent = "::";
+    neuesDragHandle.addEventListener("dragstart", starteDrag);
+
+    neuesChecklistVisitElement.append(neuesDragHandle);
+
     const neueCheckboxVisit = document.createElement("input");
     neueCheckboxVisit.type = "checkbox";
     neueCheckboxVisit.classList.add("checkboxVisit");
@@ -697,6 +705,14 @@ function neuesChecklistToDoElement ()
 
     neuesChecklistToDoElement.dataset.order = document.querySelectorAll(".checklistToDo").length;
 
+    const neuesDragHandle = document.createElement("div");
+    neuesDragHandle.classList.add("dragHandle"); 
+    neuesDragHandle.draggable = true;
+    neuesDragHandle.textContent = "::";
+    neuesDragHandle.addEventListener("dragstart", starteDrag);
+
+    neuesChecklistToDoElement.append(neuesDragHandle);
+
     const neueCheckboxToDo = document.createElement("input");
     neueCheckboxToDo.type = "checkbox";
     neueCheckboxToDo.classList.add("checkboxToDo");
@@ -725,60 +741,207 @@ function neuesChecklistToDoElement ()
 //######################
 
 const dragHandles = document.querySelectorAll(".dragHandle");
-let newChecklistVisitShadow = null; 
-let startdragVisit = null;
+let newChecklistShadow = null; 
+let startDragVisit = null;
+let startDragSection = null;
+let dragPreview = null; 
+let dragOffsetX = null; 
+let dragOffsetY = null;
+let dragStartX = null; 
+let dragStartY = null; 
 
 function aktiviereDragHandle (dragHandle)
 {
-    dragHandle.addEventListener("dragstart", starteDrag);
-
-    function removeChecklistVisitShadow ()
-    {
-        newChecklistVisitShadow.remove();
-    }dragHandle.addEventListener("dragend", removeChecklistVisitShadow);
-
+    dragHandle.addEventListener("dragstart", starteDrag);                       //Dragstart erkennen und Schattenelement erzeugen
+    dragHandle.addEventListener("drag", bewegeDragPreview);
 }dragHandles.forEach(aktiviereDragHandle);
+
+/*const transparentesDragImage = document.createElement("div");
+
+transparentesDragImage.style.width = "1px";
+transparentesDragImage.style.height = "1px";
+transparentesDragImage.style.opacity = "0";
+transparentesDragImage.style.position = "fixed";
+transparentesDragImage.style.left = "-1000px";
+
+document.body.append(transparentesDragImage);*/
 
 function starteDrag(event)
 {
-    startdragVisit = event.target.closest(".checklistVisit");
+    //console.log(event.target);
+    //console.log(event.currentTarget);
 
-    newChecklistVisitShadow = document.createElement("div");              //Schattenelement als Platzhalter erzeugen
-    newChecklistVisitShadow.classList.add("checklistVisitshadow");
+   // event.dataTransfer.setDragImage(transparentesDragImage,0,0);
+   event.dataTransfer.effectAllowed = "move";
+   event.dataTransfer.dropEffect = "move";
+
+    if (event.currentTarget.closest(".checkVisitContent") !== null)             //in welchem Bereich startet Drag
+    {
+        startDragSection = "visitNotDone";
+    }
+        else if (event.currentTarget.closest(".checkVisitDoneContent") !== null)
+        {
+            startDragSection = "visitDone";
+        }//console.log(startDragSection);
+
+    startDragVisit = event.currentTarget.closest(".checklistVisit");            //auf welchem checklist Visit ist der Drag gestartet?
+
+    const startDragRect = startDragVisit.getBoundingClientRect();
+
+    dragOffsetX = event.clientX - startDragRect.left;
+    dragOffsetY = event.clientY - startDragRect.top;
+
+    dragStartX = event.clientX;
+    dragStartY = event.clientY;
+
+    newChecklistShadow = document.createElement("div");                         //Schattenelement als Platzhalter erzeugen
+    newChecklistShadow.classList.add("checklistVisitShadow");                   //Schattenelement mit Classlist versehen
+
+    function setzeShadowAnStartposition()
+    {
+        if (startDragVisit === null || newChecklistShadow === null || dragPreview === null)
+        {
+            return;
+        }
+
+        startDragVisit.before(newChecklistShadow);
+        startDragVisit.classList.add("checklistVisitDragAktiv");
+
+        dragPreview.style.left = dragStartX - dragOffsetX + "px";
+        dragPreview.style.top = dragStartY - dragOffsetY + "px";
+    }requestAnimationFrame(setzeShadowAnStartposition);                         //Verzögerung
+
+    dragPreview = startDragVisit.cloneNode(true);
+    dragPreview.classList.add("dragPreview");
+
+    document.body.append(dragPreview);
+
+    const dragPreviewBreite = startDragVisit.getBoundingClientRect().width;
+
+    dragPreview.style.width = dragPreviewBreite + "px";    
 }
 
-function dragOver(event)
+function bewegeDragPreview(event)
 {
-    const dragOver = event.target.closest(".checklistVisit");
-    let dragOverYPosition = event.clientY;
+    if (dragPreview === null)
+    {
+        return;
+    }
+    
+    dragPreview.style.left = event.clientX - dragOffsetX + "px";
+    dragPreview.style.top = event.clientY - dragOffsetY + "px";
+}
 
-    if(startdragVisit === dragOver)
+let dragOver = null;
+let dragOverYPosition = null;
+let dragOvermiddle = null; 
+let dragOverDragSection = null; 
+
+function pruefeDragOver (event)
+{
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+
+    if(event.target.closest(".checklistVisit") !== null)
     {
-        return;   
-    }else
+        dragOver = event.target.closest(".checklistVisit");
+        //console.log("Element erkannt");
+
+         if (event.currentTarget.closest(".checkVisitContent") !== null)                    //in welchem Bereich startet Drag
     {
-        if(dragOver !== null)
+        dragOverDragSection = "visitNotDone";
+       
+    }
+        else if (event.currentTarget.closest(".checkVisitDoneContent") !== null)
         {
-            let dragOvermiddle = dragOver.getBoundingClientRect().top+(dragOver.getBoundingClientRect().height/2); // Koordinatensystem Y = 0 oben
-            
-            if(dragOverYPosition < dragOvermiddle)
-            {
-                //console.log(dragOver.dataset.order);
-                checkVisitContent.insertBefore(newChecklistVisitShadow, dragOver);
-            }else
-            {
-                //console.log("darunter Einfügen");
-                checkVisitContent.insertBefore(newChecklistVisitShadow, dragOver.nextElementSibling); //nextElementSibling = das nächste Element auf der selben DOM-Ebene
-            }
+            dragOverDragSection = "visitDone";
         }
-    }   
+    }
+    if (dragOver === null)
+    {
+        return; 
+    }
 
-   
+    dragOverYPosition = event.clientY;
+    dragOvermiddle = dragOver.getBoundingClientRect().top+(dragOver.getBoundingClientRect().height/2); // Koordinatensystem Y = 0 oben
+
+    if(dragOverYPosition < dragOvermiddle)
+    {
+        //console.log(dragOver.dataset.order);
+
+        if(startDragSection === "visitNotDone" && dragOverDragSection === "visitNotDone")
+        {
+            checkVisitContent.insertBefore(newChecklistShadow, dragOver);
+            //console.log("notDone vorher")
+        }
+            else if(startDragSection === "visitDone" && dragOverDragSection === "visitDone")
+            {
+               checkVisitDoneInner.insertBefore(newChecklistShadow, dragOver); 
+                //console.log("Done vorher")
+            }
+    }
+        else
+        {
+            //console.log("darunter Einfügen");
+            if(startDragSection === "visitNotDone" && dragOverDragSection === "visitNotDone")
+            {
+                checkVisitContent.insertBefore(newChecklistShadow, dragOver.nextElementSibling); //nextElementSibling = das nächste Element auf der selben DOM-Ebene
+                //console.log("notDone danach")
+            }      
+                else if(startDragSection === "visitDone" && dragOverDragSection === "visitDone")
+                {
+                    checkVisitDoneInner.insertBefore(newChecklistShadow, dragOver.nextElementSibling);
+                    //console.log("Done danach")
+                }
+        } 
+
+    //console.log(dragOver);
     //console.log(dragOver.getBoundingClientRect());
     //console.log(event.clientY);
-}checkVisitContent.addEventListener("dragover", dragOver);
+}checkVisitContent.addEventListener("dragover", pruefeDragOver);
+checkVisitDoneContent.addEventListener("dragover", pruefeDragOver);
 
+function erlaubeDrag(event)
+{
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+}checkVisitContent.addEventListener("dragenter", erlaubeDrag);
+checkVisitDoneContent.addEventListener("dragenter", erlaubeDrag);
 
+function dragEnd ()
+{   
+    if (newChecklistShadow !== null)
+    {
+        newChecklistShadow.replaceWith(startDragVisit);
+    }
+
+    startDragVisit.classList.remove("checklistVisitDragAktiv");
+
+    if (dragPreview !== null)
+    {
+        dragPreview.remove();
+        dragPreview = null;
+    }
+
+    dragOffsetX = null; 
+    dragOffsetY = null; 
+    dragStartX = null; 
+    dragStartY = null; 
+    newChecklistShadow = null; 
+    startDragVisit = null;
+    startDragSection = null;
+    dragOver = null;
+    dragOverYPosition = null;
+    dragOvermiddle = null;
+    dragOverDragSection = null; 
+
+}checkVisitContent.addEventListener("dragend", dragEnd);
+checkVisitDoneInner.addEventListener("dragend", dragEnd);
+
+function removeChecklistShadow ()
+{
+    newChecklistShadow.remove();
+}
 
 //CHECKLISTE LOESCHEN
 //###################
@@ -792,11 +955,11 @@ function loescheChecklist(event)
     //console.log(Number(event.target.closest(".checklistToDo").dataset.order));
     if((event.target.closest(".loescheChecklistVisit") || event.target.closest(".loescheChecklistToDo"))  === null)
     {
-        console.log("keinLoeschvorgang");
+        //console.log("keinLoeschvorgang");
         return;
     }else
     {
-        console.log("loesche Checklist");
+        //console.log("loesche Checklist");
         if(event.target.closest(".checklistVisit"))
         {
             const dataOrderAktuelleChecklistVisit = Number(event.target.closest(".checklistVisit").dataset.order);
