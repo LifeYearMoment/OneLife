@@ -332,7 +332,7 @@ function durchlaufeTasks(task, index)
             const storageKeys = definiereStorageKeys(currentIndex);                                                                     // Werte zum richtigen Task abrufen
             const savedChecklistVisit = JSON.parse(localStorage.getItem(storageKeys.checkVisitStorageKey));
 
-        if (savedChecklistVisit !== null && savedChecklistVisit[iChecklist] !== null && savedChecklistVisit[iChecklist] !== undefined)  
+            if (savedChecklistVisit !== null && savedChecklistVisit[iChecklist] !== null && savedChecklistVisit[iChecklist] !== undefined)  
             {                                                                       
                 checklistVisit.querySelector(".checklistVisitText").value = savedChecklistVisit[iChecklist].text;                       //Speiche die zum Durchlauf passende gespeicherte Checklist in das Modal
                 checklistVisit.querySelector(".checkboxVisit").checked = savedChecklistVisit[iChecklist].checked;                       //checked links ist Eigenschaft wie value bei einem input-Element, checked rechts ist der Name des Objektes. Hier einmal als Text und einmal als Checked definiert
@@ -584,40 +584,14 @@ function aktiviereCheckboxVisit(checkboxVisit)
 function pruefeCheckboxAktiv (event)
 {
     const aktuellesChecklistVisit = event.target.closest(".checklistVisit");                    //Checklist, dessen Checkbox angeklickt wurde
-    const aktuelleReihenfolge = Number(aktuellesChecklistVisit.dataset.order);                  //Reihenfolgennummer
-                                                                                                //Number macht aus Wert/string, den Dataset liefert eine Zahl
-    const aktuelleCheckboxVisits = document.querySelectorAll(".checkboxVisit");                 //Alle Checklistenelemente, um Anzahl zu bestimmen
-
+    
     //console.log(aktuellesChecklistVisit);
     //console.log(aktuelleReihenfolge);
 
     if(event.target.checked === true)                                                            //Wenn das Element abgehakt wurde, dann...
-    {
-        //console.log("checkbox aktiviert");
-
-        let IndexPlus1 = aktuelleReihenfolge + 1;                                                //Element mit Index + 1 zum geänderten Element
-        let checklistVisitSortiert = 0;
-
-        while(IndexPlus1 < aktuelleCheckboxVisits.length)
-        {
-            let ChecklistVisitNachfolger = document.querySelector(".checklistVisit[data-order='"+ IndexPlus1 +"']");
-
-            if(ChecklistVisitNachfolger !== null && ChecklistVisitNachfolger.querySelector(".checkboxVisit").checked === true) //aktuelleCheckboxVisits[IndexPlus1].checked             //Wenn der Nachfolger abgehakt, sortieren
-            {
-                //#######Sortieren#########//
-
-                document.querySelector(".checkVisitDoneInner").insertBefore(aktuellesChecklistVisit, ChecklistVisitNachfolger ); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
-                checklistVisitSortiert = 1;                                                          //aktuelleCheckboxVisits[IndexPlus1].closest(".checklistVisit")
-                break;                                                                               //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
-            }
-            IndexPlus1 = IndexPlus1 + 1;
-        }   
-        if(checklistVisitSortiert === 0)                                                             //Wenn kein Nachfoler mehr abgehakt, füge am Ende ein
-        {
-            document.querySelector(".checkVisitDoneInner").append(aktuellesChecklistVisit);
-        }
-        checklistVisitSortiert = 0;
-                    
+    {        
+        checkVisitDoneInner.append(aktuellesChecklistVisit);
+        
         steuereCheckVisitButton ();
     }else
     {
@@ -625,36 +599,13 @@ function pruefeCheckboxAktiv (event)
         
         if(checkVisitDoneContent.classList.contains("ausgeblendet") !== true)                        //Wenn Fenster "Erledig" geöffnet
         {
-            checkVisitDoneContent.style.maxHeight = checkVisitDoneContent.scrollHeight + "px";
-
-            let IndexPlus1 = aktuelleReihenfolge + 1;                                                //Element mit Index + 1 zum geänderten Element
-            let checklistVisitSortiert = 0;
-
-            while(IndexPlus1 < aktuelleCheckboxVisits.length)
-            {
-                let ChecklistVisitNachfolger = document.querySelector(".checklistVisit[data-order='"+ IndexPlus1 +"']");
-
-                if(ChecklistVisitNachfolger !== null && ChecklistVisitNachfolger.querySelector(".checkboxVisit").checked === false)
-                {
-                    //#######Sortieren#########//
-
-                    document.querySelector(".checkVisitContent").insertBefore(aktuellesChecklistVisit, ChecklistVisitNachfolger); //ELTERN ELEMENT.insertBefore(ELEMENT DAS VERSCHOBEN WIRD, ELEMENT VOR DEM ES LANDEN SOLL)
-                    checklistVisitSortiert = 1;
-                    break;                                                                          //Gefunden, dann Schleife unterbrechen, sonst Gefahr, dass sie weiterläuft und weitere Einträge findet.
-                }
-                IndexPlus1 = IndexPlus1 + 1;
-            }   
-            if(checklistVisitSortiert === 0)
-            {
-                document.querySelector(".checkVisitContent").append(aktuellesChecklistVisit);       //Wenn Checkbox Haken entfernt, dann nimm nicht nur Checkbox, sondern komplettes Element mit Text und verschiebe es
-            }
-            checklistVisitSortiert = 0;             
-            
-            steuereCheckVisitButton ();
+            checkVisitDoneContent.style.maxHeight = checkVisitDoneContent.scrollHeight + "px";                 
         }
+
+        document.querySelector(".checkVisitContent").append(aktuellesChecklistVisit);       //Wenn Checkbox Haken entfernt, dann nimm nicht nur Checkbox, sondern komplettes Element mit Text und verschiebe es
+        steuereCheckVisitButton ();
     }
 }
-
 
 //CHECKLISTE HINZUFUEGEN
 //######################
@@ -668,9 +619,8 @@ function neuesChecklistVisitElement ()
 
     const neuesDragHandle = document.createElement("div");
     neuesDragHandle.classList.add("dragHandle");
-    neuesDragHandle.draggable = true;
     neuesDragHandle.textContent = "::";
-    neuesDragHandle.addEventListener("dragstart", starteDrag);
+    aktiviereDragHandle (neuesDragHandle);
 
     neuesChecklistVisitElement.append(neuesDragHandle);
 
@@ -707,9 +657,8 @@ function neuesChecklistToDoElement ()
 
     const neuesDragHandle = document.createElement("div");
     neuesDragHandle.classList.add("dragHandle"); 
-    neuesDragHandle.draggable = true;
     neuesDragHandle.textContent = "::";
-    neuesDragHandle.addEventListener("dragstart", starteDrag);
+    aktiviereDragHandle (neuesDragHandle);
 
     neuesChecklistToDoElement.append(neuesDragHandle);
 
@@ -752,28 +701,59 @@ let dragStartY = null;
 
 function aktiviereDragHandle (dragHandle)
 {
-    dragHandle.addEventListener("dragstart", starteDrag);                       //Dragstart erkennen und Schattenelement erzeugen
-    dragHandle.addEventListener("drag", bewegeDragPreview);
+    dragHandle.addEventListener("pointerdown", startePointer);
+    document.addEventListener("pointerup", beendePointer);                      //pointerup darf überall passieren, pointerdown muss auf dem Handle passieren, sonst kein Drag
+    dragHandle.addEventListener("pointermove", bewegePointer);
 }dragHandles.forEach(aktiviereDragHandle);
 
-/*const transparentesDragImage = document.createElement("div");
-
-transparentesDragImage.style.width = "1px";
-transparentesDragImage.style.height = "1px";
-transparentesDragImage.style.opacity = "0";
-transparentesDragImage.style.position = "fixed";
-transparentesDragImage.style.left = "-1000px";
-
-document.body.append(transparentesDragImage);*/
-
-function starteDrag(event)
+function startePointer (event)
 {
-    //console.log(event.target);
-    //console.log(event.currentTarget);
+    //console.log(event.currentTarget);                                         //currentTarget = genau das Element, an dem der Listener hängt. Für das tatsächlich gedrückte Element, sollte es ein Kind sein, nutzt man event.target
 
-   // event.dataTransfer.setDragImage(transparentesDragImage,0,0);
-   event.dataTransfer.effectAllowed = "move";
-   event.dataTransfer.dropEffect = "move";
+    event.preventDefault();
+
+    event.currentTarget.setPointerCapture(event.pointerId);                     //pointerup wirkt immer auf dem Element auf dem losgelassen. Diese Funktion stellt sicher, dass er dort wirkt, wo gegriffen wurde
+    startDragVisit = event.currentTarget.closest(".checklistVisit");            //auf welchem checklist Visit ist der Drag gestartet?                            
+
+    //###### POSITION ERFASSEN ######
+
+    const startDragRect = startDragVisit.getBoundingClientRect();               //Wo genau liegt dieses Element gerade im sichtbaren Browserfenster und wie groß ist es?
+                                                                                /*{
+                                                                                top: xxx,
+                                                                                left: xxx,
+                                                                                right: xxx,
+                                                                                bottom: xxx, 
+                                                                                width: xxx, 
+                                                                                height: xxx
+                                                                                }*/
+    
+    dragOffsetX = event.clientX - startDragRect.left;                           //event.clientX/Y = Position von Maus/Finger
+    dragOffsetY = event.clientY - startDragRect.top;                            //startDragRect.left/top = Position der Karte im Browser
+                                                                                //Differenz daraus = wo innerhalb der Karte angefasst
+
+    dragStartX = event.clientX;                                                 //event.clientX/Y = Position von Maus/Finger
+    dragStartY = event.clientY;
+
+    //##### SHADOW ERZEUGEN ######
+
+    newChecklistShadow = document.createElement("div");                         //Schattenelement als Platzhalter erzeugen
+    newChecklistShadow.classList.add("checklistVisitShadow");                   //Schattenelement mit Classlist versehen
+    startDragVisit.before(newChecklistShadow);                                  //Shadow vor gegriffenen Element einfügen
+
+    //##### DRAG PREVIEW ERZEUGEN #####
+
+    dragPreview = startDragVisit.cloneNode(true);                               //Erzeugt Kopie des kompletten gegriffenen Elements. True bedeutet nicht nur äußeres Element zu kopieren, sondern auch alle Kinder.
+    dragPreview.classList.add("dragPreview");                                   //Preview mit CSS Klasse versehen
+    dragPreview.style.width = startDragRect.width + "px";                       //Ermitteln der Breite des gegriffenen Elements
+
+    document.body.append(dragPreview);                                          //hängt Prieview direkt an body, damit sie nicht von Overflow: hidden abgeschnitten wird. Über fixed im css und Koordinatendefinition erfolgt die Platzierung                         
+
+    startDragVisit.classList.add("checklistVisitDragAktiv");                    //CSS schiebt das Originalelement aus dem sichtbaren Bereich
+
+    dragPreview.style.left = dragStartX - dragOffsetX + "px";                   //Positioniert an Stelle des Originalelements   
+    dragPreview.style.top = dragStartY - dragOffsetY + "px";
+
+    //##### BEREICH CONTENT ODER DONE ERFASSEN #####
 
     if (event.currentTarget.closest(".checkVisitContent") !== null)             //in welchem Bereich startet Drag
     {
@@ -782,54 +762,9 @@ function starteDrag(event)
         else if (event.currentTarget.closest(".checkVisitDoneContent") !== null)
         {
             startDragSection = "visitDone";
-        }//console.log(startDragSection);
-
-    startDragVisit = event.currentTarget.closest(".checklistVisit");            //auf welchem checklist Visit ist der Drag gestartet?
-
-    const startDragRect = startDragVisit.getBoundingClientRect();
-
-    dragOffsetX = event.clientX - startDragRect.left;
-    dragOffsetY = event.clientY - startDragRect.top;
-
-    dragStartX = event.clientX;
-    dragStartY = event.clientY;
-
-    newChecklistShadow = document.createElement("div");                         //Schattenelement als Platzhalter erzeugen
-    newChecklistShadow.classList.add("checklistVisitShadow");                   //Schattenelement mit Classlist versehen
-
-    function setzeShadowAnStartposition()
-    {
-        if (startDragVisit === null || newChecklistShadow === null || dragPreview === null)
-        {
-            return;
         }
-
-        startDragVisit.before(newChecklistShadow);
-        startDragVisit.classList.add("checklistVisitDragAktiv");
-
-        dragPreview.style.left = dragStartX - dragOffsetX + "px";
-        dragPreview.style.top = dragStartY - dragOffsetY + "px";
-    }requestAnimationFrame(setzeShadowAnStartposition);                         //Verzögerung
-
-    dragPreview = startDragVisit.cloneNode(true);
-    dragPreview.classList.add("dragPreview");
-
-    document.body.append(dragPreview);
-
-    const dragPreviewBreite = startDragVisit.getBoundingClientRect().width;
-
-    dragPreview.style.width = dragPreviewBreite + "px";    
-}
-
-function bewegeDragPreview(event)
-{
-    if (dragPreview === null)
-    {
-        return;
-    }
-    
-    dragPreview.style.left = event.clientX - dragOffsetX + "px";
-    dragPreview.style.top = event.clientY - dragOffsetY + "px";
+    //console.log(startDragVisit);
+    //console.log(startDragSection);
 }
 
 let dragOver = null;
@@ -837,110 +772,113 @@ let dragOverYPosition = null;
 let dragOvermiddle = null; 
 let dragOverDragSection = null; 
 
-function pruefeDragOver (event)
+function bewegePointer(event)
 {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
+    //##### PREVIEW UNTER POINTER POSITIONIEREN #####
 
-    if(event.target.closest(".checklistVisit") !== null)
+    if (dragPreview === null)
     {
-        dragOver = event.target.closest(".checklistVisit");
-        //console.log("Element erkannt");
-
-         if (event.currentTarget.closest(".checkVisitContent") !== null)                    //in welchem Bereich startet Drag
-    {
-        dragOverDragSection = "visitNotDone";
-       
+        return;
     }
-        else if (event.currentTarget.closest(".checkVisitDoneContent") !== null)
+
+    dragPreview.style.left = event.clientX - dragOffsetX + "px";        //Drag-Handle von Vorschau unter Griffpoition positionieren
+    dragPreview.style.top = event.clientY - dragOffsetY + "px";
+
+    event.currentTarget.setPointerCapture(event.pointerId);             //obwohl das Element nicht mehr unter der Maus ist (aus dem sichtbaren Bereich geschoben), bekommt es noch die events
+                                                                        //pointer iD wichtig für Touch. Da mehrere Finger auf dem Touch sein können
+
+    //##### ELEMENT UNTER POINTER IDENTIFIZIEREN #####
+
+    const elementUnterPointer = document.elementFromPoint               //Funktion elementFromPoint bekommt Koordinaten genannt. Anschließed gibt sie das Element an dieser Stelle aus. Hier das Handle.
+    (
+        event.clientX,
+        event.clientY
+    );
+
+    let checklistUnterPointer = null; 
+
+    if (elementUnterPointer !== null)
+    {
+        checklistUnterPointer = elementUnterPointer.closest(".checklistVisit"); // gehe vom Handle zum Checklistenelement und speichere das Checklistenelement auf dessen Handle das Event liegt
+    }
+
+    //##### BEREICH CONTENT ODER DONE ERFASSEN #####
+
+    let bereichUnterPointer = null; 
+
+    if(elementUnterPointer !== null)
+    {
+        if (elementUnterPointer.closest(".checkVisitContent") !== null)
         {
-            dragOverDragSection = "visitDone";
+            bereichUnterPointer = "visitNotDone";   
         }
-    }
-    if (dragOver === null)
-    {
-        return; 
-    }
-
-    dragOverYPosition = event.clientY;
-    dragOvermiddle = dragOver.getBoundingClientRect().top+(dragOver.getBoundingClientRect().height/2); // Koordinatensystem Y = 0 oben
-
-    if(dragOverYPosition < dragOvermiddle)
-    {
-        //console.log(dragOver.dataset.order);
-
-        if(startDragSection === "visitNotDone" && dragOverDragSection === "visitNotDone")
-        {
-            checkVisitContent.insertBefore(newChecklistShadow, dragOver);
-            //console.log("notDone vorher")
-        }
-            else if(startDragSection === "visitDone" && dragOverDragSection === "visitDone")
+            else if (elementUnterPointer.closest(".checkVisitDone") !== null)
             {
-               checkVisitDoneInner.insertBefore(newChecklistShadow, dragOver); 
-                //console.log("Done vorher")
+                bereichUnterPointer = "visitDone";   
             }
     }
-        else
-        {
-            //console.log("darunter Einfügen");
-            if(startDragSection === "visitNotDone" && dragOverDragSection === "visitNotDone")
-            {
-                checkVisitContent.insertBefore(newChecklistShadow, dragOver.nextElementSibling); //nextElementSibling = das nächste Element auf der selben DOM-Ebene
-                //console.log("notDone danach")
-            }      
-                else if(startDragSection === "visitDone" && dragOverDragSection === "visitDone")
-                {
-                    checkVisitDoneInner.insertBefore(newChecklistShadow, dragOver.nextElementSibling);
-                    //console.log("Done danach")
-                }
-        } 
+       
+    
 
-    //console.log(dragOver);
-    //console.log(dragOver.getBoundingClientRect());
-    //console.log(event.clientY);
-}checkVisitContent.addEventListener("dragover", pruefeDragOver);
-checkVisitDoneContent.addEventListener("dragover", pruefeDragOver);
+    //##### SCHATTEN VERSCHIEBEN #####
 
-function erlaubeDrag(event)
-{
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-}checkVisitContent.addEventListener("dragenter", erlaubeDrag);
-checkVisitDoneContent.addEventListener("dragenter", erlaubeDrag);
-
-function dragEnd ()
-{   
-    if (newChecklistShadow !== null)
+    if (checklistUnterPointer !== null)                                 //Abfrage, falls es kein Element über dem Element unter dem Pointer
     {
-        newChecklistShadow.replaceWith(startDragVisit);
+        const checklistRechteck = checklistUnterPointer.getBoundingClientRect();
+        const mitte = checklistRechteck.top + checklistRechteck.height / 2;
+
+        if (event.clientY < mitte)
+        {
+            
+            if (startDragSection === "visitNotDone" && bereichUnterPointer === "visitNotDone")
+            {
+                checkVisitContent.insertBefore(newChecklistShadow, checklistUnterPointer);
+            }
+                else if (startDragSection === "visitDone" && bereichUnterPointer === "visitDone")
+                {
+                    checkVisitDoneInner.insertBefore(newChecklistShadow, checklistUnterPointer);
+                }
+        }
+            else
+            {
+                if (startDragSection === "visitNotDone" && bereichUnterPointer === "visitNotDone")
+                {
+                    checkVisitContent.insertBefore(newChecklistShadow, checklistUnterPointer.nextElementSibling);
+                }
+                    else if (startDragSection === "visitDone" && bereichUnterPointer === "visitDone")
+                    {
+                        checkVisitDoneInner.insertBefore(newChecklistShadow, checklistUnterPointer.nextElementSibling);
+                    }
+            }
+    }
+}
+
+function beendePointer ()
+{
+    if (newChecklistShadow !== null && startDragVisit !== null)
+    {
+        newChecklistShadow.replaceWith(startDragVisit);                 //ersetzt den Schatten durch das Originalelement. Ausschließliches zurückholen inden sichtbaren Bereich, würde das Element an seine alte Stelle zurückbringen
     }
 
-    startDragVisit.classList.remove("checklistVisitDragAktiv");
+    if (startDragVisit !== null)
+    {
+        startDragVisit.classList.remove("checklistVisitDragAktiv");     //Originalelement in den sichtbaen Bereich zurückholen
+    }
 
     if (dragPreview !== null)
     {
-        dragPreview.remove();
+        dragPreview.remove();                                           //Prieview entfernen
         dragPreview = null;
     }
 
-    dragOffsetX = null; 
-    dragOffsetY = null; 
+    dragOffsetX = null;
+    dragOffsetY = null;
     dragStartX = null; 
     dragStartY = null; 
-    newChecklistShadow = null; 
+    
+    newChecklistShadow = null;
     startDragVisit = null;
-    startDragSection = null;
-    dragOver = null;
-    dragOverYPosition = null;
-    dragOvermiddle = null;
-    dragOverDragSection = null; 
-
-}checkVisitContent.addEventListener("dragend", dragEnd);
-checkVisitDoneInner.addEventListener("dragend", dragEnd);
-
-function removeChecklistShadow ()
-{
-    newChecklistShadow.remove();
+    startDragSection = null; 
 }
 
 //CHECKLISTE LOESCHEN

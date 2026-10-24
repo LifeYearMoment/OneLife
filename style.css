@@ -816,6 +816,13 @@ checkVisitToDoScrollArea*/
 .dragHandle
 {
     margin-right: 8px;
+    cursor: grab;                                           /*Hand erscheint*/
+    user-select: none;                                      /*verhindert dass der Cursor über Text :: nicht entsprechend reagiert*/
+}
+
+.dragHandle:active
+{
+    cursor: grabbing;                                       /*Hand greift*/
 }
 
 .checkboxVisit,
