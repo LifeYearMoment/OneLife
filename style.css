@@ -796,7 +796,7 @@ checkVisitToDoScrollArea*/
     box-sizing: border-box;
 }
 
-.checklistVisitDragAktiv                /*Element, das gezogen wird, wird wähend Drag nach links aus dem sichtbaren Bereich gebracht*/
+.checklistDragAktiv                /*Element, das gezogen wird, wird wähend Drag nach links aus dem sichtbaren Bereich gebracht*/
 {
     position: fixed;
     left: -10000px;
@@ -875,7 +875,7 @@ checkVisitToDoScrollArea*/
     cursor: pointer;
 }
 
-.checklistVisitShadow/*,
+.checklistShadow/*,
 .checklistToDoshadow*/
 {
     display: flex;
@@ -1006,8 +1006,8 @@ checkVisitToDoScrollArea*/
     color: #666;                                                                                          
 }
 
-.checkVisitDoneContent/*,
-.checkToDoDoneContent*/
+.checkVisitDoneContent,
+.checkToDoDoneContent
 {
     overflow: hidden; 
 
